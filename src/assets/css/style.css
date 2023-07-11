@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.v-application--is-ltr .v-list-item__action:first-child,
+.v-application--is-ltr .v-list-item__icon:first-child {
+    margin-right: 8px;
+}
+
+main {
+    margin-top: 64px;
+    padding-top: 50px;
+}
+
+.theme--light.v-card {
+    background: #fbfdff;
+}
+
+label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.Vue-Toastification__toast--success {
+    background-color: #01c77d;
+}
+
+.Vue-Toastification__toast--error {
+    background-color: #ff5252;
+}
+
+.input-box {
+    position: relative;
+}
+
+input.exchange-input {
+    height: 56px;
+    width: 100%;
+    outline: none;
+    border: none;
+    margin-bottom: 0;
+    padding: 8px;
+    padding-right: 90px;
+    border: 1px solid transparent;
+    border-color: rgba(0, 0, 0, .38);
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 100ms;
+    color: #000;
+    font-weight: 400;
+}
+
+input.exchange-input:focus {
+    border: 2px solid transparent;
+    border-color: #01c77d;
+}
+
+input.exchange-input:focus:hover {
+    border-color: #01c77d;
+}
+
+input.exchange-input:hover {
+    border-color: #222;
+}
+
+.input-box .unit {
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    height: 40px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.theme--dark.v-text-field--solo>.v-input__control>.v-input__slot {
+    background: #ffffff30;
+    cursor: pointer;
+}
+
+.unit .v-input {
+    font-size: 13px;
+}
+
+.unit .v-select.v-input--dense .v-select__selection--comma {
+    margin-right: 0;
+}
+
+.unit .v-text-field.v-text-field--enclosed .v-text-field__details,
+.v-text-field.v-text-field--enclosed:not(.v-text-field--rounded)>.v-input__control>.v-input__slot {
+    padding: 0 10px;
+    padding-right: 5px;
+}
+
+.input-box .unit img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    margin-right: 5px;
+}
+
+.v-list-item img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.v-text-field__details {
+    display: none;
+}
+
+.v-input__slot {
+    margin-bottom: 0;
+}
+
+.theme--light.v-stepper {
+    background: #fbfdff;
+}
+
+.pay-table td {
+    padding: 10px !important;
+}
+
+.theme--light.v-data-table {
+    background-color: #fbfdff;
+}
+
+.img-qr {
+    height: 235px;
+    display: block;
+    margin: 0 auto;
+}
+
+.note {
+    margin-top: 10px;
+    font-size: 14px;
+    font-style: italic;
+    color: #cf304a;
+}
+
+.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat)>.v-input__control>.v-input__slot {
+    box-shadow: none;
+}
+
+.estimated {
+    font-size: 12px;
+    line-height: 13px;
+    margin-top: 6px;
+    color: #707a8a;
+
+}
+
+.estimated span {
+    text-transform: uppercase;
+}
+
+.estimated b {
+    font-weight: 400;
+}
+
+.tooltip {
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.money .v-input__slot {
+    padding-right: 15px !important;
+}
+
+.asset img {
+    height: 40px;
+    width: 40px;
+    object-fit: contain;
+}
+
+.asset .name {
+    text-transform: uppercase;
+    margin-left: 15px;
+}
+
+.asset {
+    padding: 15px;
+    border: 1px solid #ececec;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.asset:not(:last-child) {
+    margin-bottom: 12px;
+}
+
+.v-input--is-disabled {
+    background-color: #f0f0f0;
+}
+
+.theme--light.v-input,
+.theme--light.v-input input,
+.theme--light.v-input textarea {
+    color: #000;
+}
+
+.upper-case {
+    text-transform: uppercase;
+}
+
+.pay-table tr td:nth-child(2) {
+    font-weight: 600;
+}
+
+.system .v-text-field__details {
+    display: block;
+}
+
+.system h1 {
+    text-align: center;
+    font-weight: 500;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.create-account span {
+    cursor: pointer;
+    color: #01c77d;
+}
+
+.system .unit .v-text-field.v-text-field--enclosed .v-text-field__details,
+.v-text-field.v-text-field--enclosed:not(.v-text-field--rounded)>.v-input__control>.v-input__slot {
+    padding: 0 10px;
+}
+
+.system .v-input__slot {
+    margin-bottom: 8px;
+}
+
+.system .v-text-field.v-text-field--enclosed .v-text-field__details {
+    padding: 0;
+}
+
+.error-msg {
+    color: #ff5252;
+    font-size: 14px;
+    line-height: 14px;
+    margin-top: 8px;
+    font-weight: 500;
+}
