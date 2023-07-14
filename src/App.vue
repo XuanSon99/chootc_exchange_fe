@@ -1,6 +1,6 @@
 <template>
   <v-app data-app>
-    <Header />
+    <Header v-if="$route.meta.header" />
     <router-view />
     <Footer />
   </v-app>

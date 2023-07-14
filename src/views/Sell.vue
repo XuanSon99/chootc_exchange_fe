@@ -21,10 +21,7 @@
                           </v-icon>
                         </template>
                         <div class="tooltip my-1">
-                          Hạn mức giao dịch là 20 - 100 USDT
-                          <br>
-                          Tạo tài khoản và xác minh danh tính <br>
-                          để tăng hạn mức lên 10k USDT
+                          Số lượng tối thiểu trên 1 giao dịch <br> là 20 USDT
                         </div>
                       </v-tooltip>
                     </div>
@@ -323,14 +320,15 @@ export default {
         return
       }
       let data = {
-        phone: this.account,
+        phone: this.account.phone,
         amount: this.amount,
         token: this.token,
         money: this.money,
         network: this.network.value,
         bank_name: this.bank.info.name,
         account_number: this.bank.account,
-        owner_name: this.bank.owner
+        owner_name: this.bank.owner,
+        rate: this.price
       }
       this.CallAPI("post", "sell-order", data, (res) => {
         this.order_data = res.data.data

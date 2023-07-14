@@ -1,8 +1,10 @@
 <template>
   <v-app-bar color="transparent" fixed>
     <v-container class="d-flex align-center">
-      <v-img max-width="198" src="/img/logo-header.png">
+      <router-link to="/">
+        <v-img max-width="198" src="/img/logo-header.png">
       </v-img>
+      </router-link>
 
       <v-spacer></v-spacer>
 
@@ -60,7 +62,7 @@ export default {
   data: () => ({
     items: [
       { text: 'Thông tin tài khoản', icon: 'mdi-account', url: '/profile' },
-      { text: 'Xác minh danh tính', icon: 'mdi-check-circle-outline ', url: '/kyc' },
+      // { text: 'Xác minh danh tính', icon: 'mdi-check-circle-outline ', url: '/kyc' },
     ]
   }),
   computed: {
@@ -72,7 +74,7 @@ export default {
   methods: {
     getProfile() {
       this.CallAPI("get", "profile", {}, (res) => {
-        this.$store.dispatch('setAccount', res.data.phone)
+        this.$store.dispatch('setAccount', res.data)
       }, (err) => localStorage.clear())
     },
     logout() {

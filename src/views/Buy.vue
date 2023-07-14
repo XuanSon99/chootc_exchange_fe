@@ -21,10 +21,7 @@
                           </v-icon>
                         </template>
                         <div class="tooltip my-1">
-                          Hạn mức giao dịch là 20 - 100 USDT
-                          <br>
-                          Tạo tài khoản và xác minh danh tính <br>
-                          để tăng hạn mức lên 10k USDT
+                          Hãy tạo tài khoản và xác minh danh tính <br> để thực hiện giao dịch mua
                         </div>
                       </v-tooltip>
                     </div>
@@ -285,6 +282,10 @@ export default {
         this.error = "Vui lòng đăng nhập vào tài khoản"
         return
       }
+      if(!this.account.verify){
+        this.error = "Vui lòng xác minh danh tính"
+        return
+      }
       if (!this.amount || !this.address) {
         this.error = "Vui lòng nhập đủ thông tin"
         return
@@ -314,12 +315,13 @@ export default {
         return
       }
       let data = {
-        phone: this.account,
+        phone: this.account.phone,
         amount: this.amount,
         money: this.money,
         network: this.network.value,
         address: this.address,
-        token: this.token
+        token: this.token,
+        rate: this.price
       }
       this.CallAPI("post", "buy-order", data, (res) => {
         this.order_data = res.data.data

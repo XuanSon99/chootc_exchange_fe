@@ -113,7 +113,7 @@ export default {
         },
         getProfile() {
             this.CallAPI("get", "profile", {}, (res) => {
-                this.$store.dispatch('setAccount', res.data.phone)
+                this.$store.dispatch('setAccount', res.data)
             }, (err) => localStorage.clear())
         },
         getAsset() {

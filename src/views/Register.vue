@@ -8,8 +8,8 @@
                         <v-form v-model="valid" ref="form" lazy-validation>
                             <label>Số điện thoại</label>
                             <v-text-field v-model="phone" type="number" prepend-inner-icon="mdi-account-outline"
-                                :rules="[rules.required, rules.phone, rules.exist]" @input="rules.exist = true"
-                                outlined required placeholder="Nhập số điện thoại"></v-text-field>
+                                :rules="[rules.required, rules.phone, rules.exist]" @input="rules.exist = true" outlined
+                                 placeholder="Nhập số điện thoại"></v-text-field>
                             <label>Mật khẩu</label>
                             <v-text-field v-model="password" :type="show_pass ? 'text' : 'password'"
                                 :rules="[rules.required, rules.password]" prepend-inner-icon="mdi-lock"
@@ -17,9 +17,14 @@
                                 outlined placeholder="Nhập mật khẩu"></v-text-field>
                             <label>Xác nhận mật khẩu</label>
                             <v-text-field v-model="re_password" :type="show_re_pass ? 'text' : 'password'"
-                                :rules="[rules.required, rules.password, rules.re_password]" prepend-inner-icon="mdi-lock"
+                                :rules="[rules.required, rules.password, rules.re_password]" prepend-inner-icon="mdi-lock-check"
                                 :append-icon="show_re_pass ? 'mdi-eye' : 'mdi-eye-off'"
-                                @click:append="show_re_pass = !show_re_pass" outlined placeholder="Nhập lại mật khẩu"></v-text-field>
+                                @click:append="show_re_pass = !show_re_pass" outlined
+                                placeholder="Nhập lại mật khẩu"></v-text-field>
+                            <label>Người giới thiệu</label>
+                            <v-text-field v-model="referral" type="number" prepend-inner-icon="mdi-account"
+                                :rules="[rules.referral]" @input="rules.referral = true" outlined
+                                placeholder="Nhập SĐT giới thiệu nếu có" :disabled="$route.query.ref"></v-text-field>
                             <v-btn color="primary" block x-large @click="loginHandle" :disabled="!valid">Đăng ký</v-btn>
                             <div class="mt-3 create-account">
                                 Bạn đã có tài khoản?
@@ -86,17 +91,20 @@ export default {
             phone: '',
             password: '',
             re_password: '',
+            referral: '',
             rules: {
                 required: v => !!v || 'Không được bỏ trống',
                 phone: v => /(84|0[3|5|7|8|9])+([0-9]{8})\b/g.test(v) || 'Số điện thoại không hợp lệ',
                 password: v => (v && v.length >= 6) || 'Mật khẩu tối thiểu 6 ký tự',
                 re_password: v => v === this.password || 'Xác nhận mật khẩu không đúng',
                 exist: true,
+                referral: true
             }
         }
     },
     mounted() {
         this.getAsset()
+        this.referral = this.$route.query.ref
     },
     methods: {
         loginHandle() {
@@ -104,15 +112,18 @@ export default {
             if (!this.phone || !this.password || !this.re_password) return
             let data = {
                 phone: this.phone,
-                password: this.password
+                password: this.password,
+                referral: this.referral
             }
             this.CallAPI("post", "auth/signup", data, (res) => {
-                this.phone = ''
-                this.password = ''
-                this.re_password = ''
+                this.$router.push('/login')
                 this.$toast.success('Đăng ký thành công')
             }, (err) => {
-                this.rules.exist = err.response.data.message[0]
+                if (err.response.status == 400) {
+                    this.rules.exist = err.response.data.message[0]
+                    return
+                }
+                this.rules.referral = err.response.data.message[0]
             })
         },
         getAsset() {
