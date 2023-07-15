@@ -23,7 +23,7 @@
                         </v-form>
                     </div>
                 </v-col>
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="4" v-if="!mobile">
                     <v-card>
                         <div class="px-6 py-5 title d-flex align-center">
                             <v-icon color="primary" class="mr-1">mdi-chart-box-outline </v-icon>
@@ -86,6 +86,11 @@ export default {
                 not_exists: true,
                 invalid: true
             }
+        }
+    },
+    computed: {
+        mobile() {
+            return this.$vuetify.breakpoint.width < 1025
         }
     },
     mounted() {

@@ -1,72 +1,124 @@
 <template>
-  <v-app-bar color="transparent" fixed>
-    <v-container class="d-flex align-center">
-      <router-link to="/">
-        <v-img max-width="198" src="/img/logo-header.png">
-      </v-img>
-      </router-link>
+  <div>
+    <v-app-bar color="#ffffff" height="68px" fixed>
+      <v-container class="d-flex align-center">
+        <router-link to="/">
+          <v-img class="logo" src="/img/logo-header.png">
+          </v-img>
+        </router-link>
 
-      <v-spacer></v-spacer>
+        <v-spacer></v-spacer>
 
-      <v-btn @click="$router.push('/buy/usdt')" text >
-        Mua
-      </v-btn>
+        <v-btn icon @click.stop="drawer = !drawer" v-if="mobile">
+          <v-icon>mdi-menu</v-icon>
+        </v-btn>
 
-      <v-btn @click="$router.push('/sell/usdt')" text>
-        Bán
-      </v-btn>
-
-      <v-btn @click="$router.push('/history')" text>
-        Lịch sử
-      </v-btn>
-
-      <v-menu offset-y v-if="account" transition="slide-y-transition">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn v-bind="attrs" v-on="on" outlined class="ml-4" color="primary">
-            Tài khoản
-            <v-icon right dark>
-              mdi-menu-down
-            </v-icon>
+        <div class="d-flex align-center" v-else>
+          <v-btn @click="$router.push('/buy/usdt')" text>
+            Mua
           </v-btn>
-        </template>
-        <v-list dense>
-          <v-list-item-group color="primary">
-            <v-list-item v-for="(item, i) in items" :key="i" @click="$router.push(item.url)">
-              <v-list-item-icon>
-                <v-icon v-text="item.icon"></v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title v-text="item.text"></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-divider></v-divider>
-            <v-list-item @click="logout">
-              <v-list-item-icon>
-                <v-icon>mdi-arrow-right</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>Đăng xuất</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-      </v-menu>
-      <v-btn class="ml-4" color="primary" outlined @click="$router.push('/login')" v-else>Đăng nhập</v-btn>
-    </v-container>
-  </v-app-bar>
+
+          <v-btn @click="$router.push('/sell/usdt')" text>
+            Bán
+          </v-btn>
+
+          <v-btn @click="$router.push('/history')" text>
+            Lịch sử
+          </v-btn>
+        </div>
+
+        <v-menu offset-y v-if="account" transition="slide-y-transition">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon v-bind="attrs" v-on="on" outlined class="ml-4" color="primary">
+              <v-icon>
+                mdi-account
+              </v-icon>
+            </v-btn>
+          </template>
+          <v-list dense>
+            <v-list-item-group color="primary">
+              <v-list-item @click="$router.push('/profile')">
+                <v-list-item-icon>
+                  <v-icon>mdi-account</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>Thông tin tài khoản</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider></v-divider>
+              <v-list-item @click="logout">
+                <v-list-item-icon>
+                  <v-icon>mdi-arrow-right</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>Đăng xuất</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-menu>
+        <v-btn class="ml-4" color="primary" outlined @click="$router.push('/login')" v-if="!account && !mobile">Đăng
+          nhập</v-btn>
+      </v-container>
+
+    </v-app-bar>
+    <v-navigation-drawer v-model="drawer" absolute temporary>
+      <div class="pa-4">
+        <v-img class="logo" src="/img/logo-header.png"></v-img>
+      </div>
+
+      <v-divider></v-divider>
+
+      <v-list dense>
+        <v-list-item v-for="item in items" :key="item.title" @click="$router.push(item.url)" link>
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.text }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <template v-slot:append>
+        <div class="mx-5 mt-6">
+          <v-btn>OK</v-btn>
+        </div>
+      </template>
+    </v-navigation-drawer>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 export default {
   data: () => ({
-    items: [
-      { text: 'Thông tin tài khoản', icon: 'mdi-account', url: '/profile' },
-      // { text: 'Xác minh danh tính', icon: 'mdi-check-circle-outline ', url: '/kyc' },
-    ]
+    drawer: false,
   }),
   computed: {
     ...mapGetters(["account"]),
+    items() {
+      let nav = [
+        { text: 'Giao dịch mua', icon: 'mdi-alpha-b-circle', url: '/buy/usdt' },
+        { text: 'Giao dịch bán', icon: 'mdi-sack ', url: '/sell/usdt' },
+      ]
+      if (this.account) {
+        nav.push(
+          { text: 'Lịch sử', icon: 'mdi-history ', url: '/history' },
+          { text: 'Thông tin tài khoản', icon: 'mdi-account', url: '/profile' },
+          { text: 'Xác minh danh tính', icon: 'mdi-check-circle-outline ', url: `/kyc/${this.account.phone}` },
+        )
+      } else {
+        nav.push(
+          { text: 'Đăng nhập', icon: 'mdi-account-circle ', url: '/login' },
+          { text: 'Đăng ký', icon: 'mdi-account', url: '/register' },
+        )
+      }
+      return nav
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.width < 1025
+    }
   },
   mounted() {
     this.getProfile()

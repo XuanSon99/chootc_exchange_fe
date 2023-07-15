@@ -90,7 +90,7 @@
                     <v-simple-table dense>
                       <tbody>
                         <tr>
-                          <td width="150px">Số lượng mua:</td>
+                          <td style="min-width: 130px;">Số lượng mua:</td>
                           <td class="upper-case">{{ formatMoney(amount) }} {{ token }} ({{ network.value }})</td>
                         </tr>
                         <tr>
@@ -255,7 +255,8 @@ export default {
       return `https://img.vietqr.io/image/${this.bank[0]}-${this.bank[2]}-compact2.jpg?amount=${this.money}&addInfo=${this.order_data.code}&accountName=${this.bank[1]}`
     },
     money_pay() {
-      return `${this.amount} * ${this.formatMoney(this.price)} + ${this.formatMoney(this.transfer_fee * this.usdt_price)} = ${this.formatMoney(this.money)}`.replace("+ 0 ", "")
+      return this.formatMoney(this.money);
+      // return `${this.amount} * ${this.formatMoney(this.price)} + ${this.formatMoney(this.transfer_fee * this.usdt_price)} = ${this.formatMoney(this.money)}`.replace("+ 0 ", "")
     },
     transfer_fee() {
       if (this.token == "usdt" || this.token == "busd") {

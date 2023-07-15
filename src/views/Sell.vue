@@ -105,7 +105,7 @@
                     <v-simple-table dense>
                       <tbody>
                         <tr>
-                          <td width="150px">Mã giao dịch:</td>
+                          <td style="min-width: 130px;">Mã giao dịch:</td>
                           <td>{{ order_data.code }}</td>
                         </tr>
                         <tr>
@@ -276,7 +276,8 @@ export default {
   computed: {
     ...mapGetters(["account"]),
     money_pay() {
-      return `${this.amount} * ${this.formatMoney(this.price)} - ${this.formatMoney(this.transfer_fee * this.usdt_price)} = ${this.formatMoney(this.money)}`.replace("- 0 ", "")
+      return this.formatMoney(this.money);
+      // return `${this.amount} * ${this.formatMoney(this.price)} - ${this.formatMoney(this.transfer_fee * this.usdt_price)} = ${this.formatMoney(this.money)}`.replace("- 0 ", "")
     },
     transfer_fee() {
       if (this.token == "usdt" || this.token == "busd") {

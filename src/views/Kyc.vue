@@ -48,7 +48,7 @@
             <span>Video chân dung (5s)</span>
           </div>
           <div class="paddin">
-            <img src="img/portrait.png" v-if="!video" class="image-pre" alt="">
+            <img src="/img/portrait.png" v-if="!video" class="image-pre" alt="">
             <video id="video-preview" controls :class="{ 'dp-none': !video }" autoplay></video>
             <label for="video" class="btn-all mt-5">
               <span v-if="!video">Bắt đầu</span>
@@ -65,8 +65,7 @@
           <div class="paddin">
             <img src="/img/success.png" alt="" />
             <p>
-              Chúc mừng bạn đã gửi yêu cầu KYC thành công. Vui lòng liên hệ Admin
-              để được thông qua!
+              Chúc mừng bạn đã gửi yêu cầu xác minh danh tính (KYC) thành công!
             </p>
           </div>
         </div>
@@ -74,7 +73,7 @@
           <div class="paddin">
             <img src="/img/error.png" alt="" />
             <p>
-              Yêu cầu KYC đã được gửi trước đó. Vui lòng liên hệ Admin để được
+              Yêu cầu KYC đã được gửi trước đó. Vui lòng liên hệ hỗ trợ để được
               thông qua!
             </p>
           </div>
