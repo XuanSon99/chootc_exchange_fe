@@ -40,6 +40,9 @@ label {
 .input-box {
     position: relative;
 }
+a{
+    text-decoration: none;
+}
 
 input.exchange-input {
     height: 56px;

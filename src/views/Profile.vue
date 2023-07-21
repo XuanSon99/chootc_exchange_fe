@@ -9,7 +9,7 @@
         </v-avatar>
         <div class="account">
           <h1>{{ account.phone }}</h1>
-          <div class="verify" v-if="account.verify">
+          <div class="verify" v-if="account.verify == 'success'">
             <v-icon color="primary" class="mr-1" size="16">
               mdi-check
             </v-icon>
@@ -60,6 +60,14 @@
             </div>
             <v-text-field class="mt-3" :value="kyc_link" outlined readonly append-icon="mdi-content-copy"
               @click:append="copyText" @click="copyText"></v-text-field>
+          </v-card>
+          <v-card class="pa-6" outlined v-if="account.verify == 'pending'">
+            <div class="d-flex align-start">
+              <v-icon color="orange">mdi-alert-outline</v-icon>
+              <div class="warning-msg ml-3">
+                Yêu cầu KYC của bạn đang trong quá trình xét duyệt. Bạn có thể liên hệ <a href="https://t.me/ChoOTCVN_support" target="_blank">@ChoOTCVN_support</a> để được hỗ trợ.
+              </div>
+            </div>
           </v-card>
         </v-col>
         <v-col cols="12" md="4">

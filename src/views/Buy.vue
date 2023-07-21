@@ -99,7 +99,7 @@
                         </tr>
                         <tr>
                           <td>Tỷ giá:</td>
-                          <td>{{ formatMoney(price) }} VNĐ</td>
+                          <td>{{ formatMoney(order_data.rate) }} VNĐ</td>
                         </tr>
                         <tr>
                           <td>Số tiền cần trả:</td>
@@ -220,13 +220,13 @@ export default {
       price: 0,
       network_list: [
         {
-          name: "BNB Smartchain (BEP20)",
-          value: "bep20",
+          name: "Tron (TRC20)",
+          value: "trc20",
           fee: 1
         },
         {
-          name: "Tron (TRC20)",
-          value: "trc20",
+          name: "BNB Smartchain (BEP20)",
+          value: "bep20",
           fee: 1
         },
         {
@@ -279,11 +279,11 @@ export default {
   },
   methods: {
     orderHandle() {
-      if(!this.account){
+      if (!this.account) {
         this.error = "Vui lòng đăng nhập vào tài khoản"
         return
       }
-      if(!this.account.verify){
+      if (!this.account.verify) {
         this.error = "Vui lòng xác minh danh tính"
         return
       }

@@ -62,7 +62,7 @@
       </v-container>
 
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer" absolute temporary>
+    <v-navigation-drawer v-model="drawer" temporary fixed>
       <div class="pa-4">
         <v-img class="logo" src="/img/logo-header.png"></v-img>
       </div>
@@ -80,11 +80,6 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-      <template v-slot:append>
-        <div class="mx-5 mt-6">
-          <v-btn>OK</v-btn>
-        </div>
-      </template>
     </v-navigation-drawer>
   </div>
 </template>
