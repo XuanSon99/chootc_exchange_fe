@@ -14,17 +14,26 @@
         </v-btn>
 
         <div class="d-flex align-center" v-else>
-          <v-btn @click="$router.push('/buy/usdt')" text>
+          <v-btn @click="$router.push('/buy/usdt')" text color="black">
             Mua
           </v-btn>
 
-          <v-btn @click="$router.push('/sell/usdt')" text>
+          <v-btn @click="$router.push('/sell/usdt')" text color="black">
             Bán
           </v-btn>
 
-          <v-btn @click="$router.push('/history')" text>
+          <v-btn @click="$router.push('/history')" text color="black">
             Lịch sử
           </v-btn>
+
+          <v-btn href="http://chootc.com" target="_blank" text color="black">
+            Tỷ giá
+          </v-btn>
+
+          <v-btn href="https://chootc.com/tin-tuc" target="_blank" text color="black">
+            Tin tức
+          </v-btn>
+
         </div>
 
         <v-menu offset-y v-if="account" transition="slide-y-transition">
@@ -43,6 +52,14 @@
                 </v-list-item-icon>
                 <v-list-item-content>
                   <v-list-item-title>Thông tin tài khoản</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item @click="$router.push('/kyc/' + account.phone)" v-if="!account.verify">
+                <v-list-item-icon>
+                  <v-icon>mdi-shield-account-outline</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>Xác minh danh tính</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <v-divider></v-divider>
@@ -101,7 +118,6 @@ export default {
         nav.push(
           { text: 'Lịch sử', icon: 'mdi-history ', url: '/history' },
           { text: 'Thông tin tài khoản', icon: 'mdi-account', url: '/profile' },
-          { text: 'Xác minh danh tính', icon: 'mdi-check-circle-outline ', url: `/kyc/${this.account.phone}` },
         )
       } else {
         nav.push(

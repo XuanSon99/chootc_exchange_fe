@@ -21,7 +21,8 @@
                           </v-icon>
                         </template>
                         <div class="tooltip my-1">
-                          Hãy tạo tài khoản và xác minh danh tính <br> để thực hiện giao dịch mua
+                          Hạn mức giao dịch mua mặc định là 1 - 25 triệu. <br> Hãy đăng ký tài khoản và xác minh danh tính
+                          <br> để tăng hạn mức giao dịch
                         </div>
                       </v-tooltip>
                     </div>
@@ -46,16 +47,27 @@
                     </div>
                   </v-col>
                   <v-col cols="12" md="7">
-                    <label>Số tiền cần thanh toán</label>
+                    <div class="d-flex align-center">
+                      <label>Số tiền cần thanh toán</label>
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-icon class="ml-1 mb-1" size="16" v-bind="attrs" v-on="on">
+                            mdi-help-circle-outline
+                          </v-icon>
+                        </template>
+                        <div class="tooltip my-1">
+                          Số tiền cần thanh toán có thể bị thay đổi <br> do tỷ giá được cập nhật liên tục
+                        </div>
+                      </v-tooltip>
+                    </div>
                     <v-text-field outlined :value="money_pay" readonly class="money">
                       <template v-slot:append>
                         <img width="20" height="20" src="/img/p2p/vnd.png" alt="">
                       </template>
                     </v-text-field>
                     <div class="estimated">
-                      Phí:
+                      Phí blockchain:
                       <span>{{ transfer_fee }} USDT ≈ {{ formatMoney(transfer_fee * usdt_price) }} VND</span>
-                      <b v-if="transfer_fee"> (Bao gồm cả phí Blockchain)</b>
                     </div>
                   </v-col>
                 </v-row>
@@ -72,7 +84,13 @@
                     </v-text-field>
                   </v-col>
                 </v-row>
-                <div class="error-msg" v-if="error">{{ error }}</div>
+                <div class="d-flex align-center" v-if="error">
+                  <span class="error-msg">
+                    {{ error }}
+                  </span>
+                  <v-btn class="fz-14 ml-1 mt-2" color="primary" :to="'/kyc/' + account.phone"
+                    v-if="error.includes('KYC')" small outlined>KYC ngay</v-btn>
+                </div>
               </div>
               <v-btn color="primary" @click="orderHandle">
                 Xác nhận
@@ -103,7 +121,7 @@
                         </tr>
                         <tr>
                           <td>Số tiền cần trả:</td>
-                          <td>{{ formatMoney(money) }} VNĐ</td>
+                          <td>{{ formatMoney(order_data.money) }} VNĐ</td>
                         </tr>
                         <tr>
                           <td>STK thanh toán:</td>
@@ -213,7 +231,7 @@ export default {
     return {
       tab: 0,
       step: 1,
-      amount: 20,
+      amount: 100,
       token_list: ["usdt", "btc", "eth", "busd", "bnb"],
       token: "usdt",
       money: "",
@@ -236,8 +254,8 @@ export default {
         },
       ],
       network: {
-        name: "BNB Smartchain (BEP20)",
-        value: "bep20",
+        name: "Tron (TRC20)",
+        value: "trc20",
         fee: 1
       },
       usdt_price: 0,
@@ -255,20 +273,19 @@ export default {
       return `https://img.vietqr.io/image/${this.bank[0]}-${this.bank[2]}-compact2.jpg?amount=${this.money}&addInfo=${this.order_data.code}&accountName=${this.bank[1]}`
     },
     money_pay() {
-      return this.formatMoney(this.money);
-      // return `${this.amount} * ${this.formatMoney(this.price)} + ${this.formatMoney(this.transfer_fee * this.usdt_price)} = ${this.formatMoney(this.money)}`.replace("+ 0 ", "")
+      if (this.$vuetify.breakpoint.width < 1025) {
+        return this.formatMoney(this.money);
+      }
+      return `${this.amount} * ${this.formatMoney(this.price)} + ${this.formatMoney(this.transfer_fee * this.usdt_price)} = ${this.formatMoney(this.money)}`.replace("+ 0 ", "")
     },
     transfer_fee() {
       if (this.token == "usdt" || this.token == "busd") {
-        if (this.amount < 5000) {
-          return this.network.fee + 1
-        }
         if (this.amount < 10000) {
           return this.network.fee
         }
         return 0
       }
-      return this.network.fee - 1
+      return (this.network.fee - 1).toFixed(2)
     },
   },
   mounted() {
@@ -279,18 +296,32 @@ export default {
   },
   methods: {
     orderHandle() {
-      if (!this.account) {
-        this.error = "Vui lòng đăng nhập vào tài khoản"
+      if (this.money > 25000000) {
+        if (!this.account) {
+          this.error = 'Hạn mức mua tối đa là 25 triệu. Hãy đăng nhập để tăng hạn mức'
+          return
+        }
+        if (this.account.verify != 'success') {
+          this.error = 'Hạn mức mua tối đa là 25 triệu. Hãy KYC để tăng hạn mức'
+          return
+        }
+      }
+
+      if (this.money < 1000000) {
+        this.error = 'Hạn mức giao dịch tối thiểu là 1 triệu'
         return
       }
-      if (!this.account.verify) {
-        this.error = "Vui lòng xác minh danh tính"
+
+      if (!this.amount) {
+        this.error = "Vui lòng nhập số lượng cần mua"
         return
       }
-      if (!this.amount || !this.address) {
-        this.error = "Vui lòng nhập đủ thông tin"
+
+      if (!this.address) {
+        this.error = "Vui lòng nhập địa chỉ ví"
         return
       }
+
       if (this.network.value == 'trc20' && !this.validateTrc(this.address)) {
         this.error = "Địa chỉ ví không chính xác"
         return
@@ -299,33 +330,18 @@ export default {
         this.error = "Địa chỉ ví không chính xác"
         return
       }
-      if (this.amount < 0.01 && this.token == 'btc') {
-        this.error = `Giao dịch tối thiểu 0.01 ${this.token.toUpperCase()}`
-        return
-      }
-      if (this.amount < 20 && this.token == 'usdt' || this.token == 'busd') {
-        this.error = `Giao dịch tối thiểu 20 ${this.token.toUpperCase()}`
-        return
-      }
-      if (this.amount < 0.1 && this.token == 'eth') {
-        this.error = `Giao dịch tối thiểu 0.1 ${this.token.toUpperCase()}`
-        return
-      }
-      if (this.amount < 1 && this.token == 'bnb') {
-        this.error = `Giao dịch tối thiểu 1 ${this.token.toUpperCase()}`
-        return
-      }
+
       let data = {
         phone: this.account.phone,
         amount: this.amount,
-        money: this.money,
         network: this.network.value,
         address: this.address,
         token: this.token,
-        rate: this.price
+        fee: Math.round(this.transfer_fee * this.usdt_price),
       }
       this.CallAPI("post", "buy-order", data, (res) => {
         this.order_data = res.data.data
+        this.price = this.order_data.rate
         this.step = 2
       })
     },
@@ -420,8 +436,24 @@ export default {
         this.$router.push('/buy/' + this.token)
     },
     $route() {
-      this.token = this.$route.params.id
+      this.token = this.$route.params.id ? this.$route.params.id : 'usdt'
+
+      this.step = 1
       this.getPrice()
+
+      if (this.token == 'usdt' || this.token == 'busd') {
+        this.amount = 100
+      }
+      if (this.token == 'btc') {
+        this.amount = 0.01
+      }
+      if (this.token == 'bnb') {
+        this.amount = 1
+      }
+      if (this.token == 'eth') {
+        this.amount = 0.1
+      }
+      this.money = 0
     }
   },
   beforeDestroy() {

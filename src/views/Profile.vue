@@ -1,7 +1,7 @@
 <template>
   <main class="profile">
     <v-container>
-      <div class="d-flex mb-6">
+      <div class="d-flex mb-6 mx-6">
         <v-avatar color="primary" size="80">
           <v-icon dark size="50">
             mdi-account-circle
@@ -25,63 +25,68 @@
       </div>
       <v-row>
         <v-col cols="12" md="8">
-          <v-row>
-            <v-col cols="12" md="5">
-              <label>Họ và tên</label>
-              <v-text-field v-model="name" outlined placeholder="Họ và tên">
-              </v-text-field>
-            </v-col>
-            <v-col cols="12" md="7">
-              <label>Ngày sinh</label>
-              <v-text-field v-model="birthday" outlined :placeholder="gender_placeholder">
-              </v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" md="5">
-              <label>Giới tính</label>
-              <v-select v-model="gender" :items="['Nam', 'Nữ', 'Khác']" outlined placeholder="Giới tính">
-              </v-select>
-            </v-col>
-            <v-col cols="12" md="7">
-              <label>Địa chỉ</label>
-              <v-text-field v-model="address" outlined placeholder="Địa chỉ">
-              </v-text-field>
-            </v-col>
-          </v-row>
-          <v-btn class="my-6" color="primary" x-large block @click="updateProfile">Cập nhật</v-btn>
-          <v-card class="pa-6" outlined v-if="!account.verify">
-            <div class="d-flex align-start">
-              <v-icon color="orange">mdi-alert-outline</v-icon>
-              <div class="warning-msg ml-3">
-                Vui lòng cập nhật thông tin cá nhân. Sau đó truy cập link bên dưới bằng thiết bị di động để xác minh danh
-                tính.
+          <div class="mx-6">
+            <v-row>
+              <v-col cols="12" md="5">
+                <label>Họ và tên</label>
+                <v-text-field v-model="name" outlined placeholder="Họ và tên">
+                </v-text-field>
+              </v-col>
+              <v-col cols="12" md="7">
+                <label>Ngày sinh</label>
+                <v-text-field v-model="birthday" outlined :placeholder="gender_placeholder">
+                </v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" md="5">
+                <label>Giới tính</label>
+                <v-select v-model="gender" :items="['Nam', 'Nữ', 'Khác']" outlined placeholder="Giới tính">
+                </v-select>
+              </v-col>
+              <v-col cols="12" md="7">
+                <label>Địa chỉ</label>
+                <v-text-field v-model="address" outlined placeholder="Địa chỉ">
+                </v-text-field>
+              </v-col>
+            </v-row>
+            <v-btn class="my-6" color="primary" x-large block @click="updateProfile">Cập nhật</v-btn>
+            <v-card class="pa-6" outlined v-if="!account.verify">
+              <div class="d-flex align-start">
+                <v-icon color="orange">mdi-alert-outline</v-icon>
+                <div class="warning-msg ml-3">
+                  Vui lòng cập nhật thông tin cá nhân. Sau đó truy cập link bên dưới bằng thiết bị di động để xác minh
+                  danh tính.
+                </div>
               </div>
-            </div>
-            <v-text-field class="mt-3" :value="kyc_link" outlined readonly append-icon="mdi-content-copy"
-              @click:append="copyText" @click="copyText"></v-text-field>
-          </v-card>
-          <v-card class="pa-6" outlined v-if="account.verify == 'pending'">
-            <div class="d-flex align-start">
-              <v-icon color="orange">mdi-alert-outline</v-icon>
-              <div class="warning-msg ml-3">
-                Yêu cầu KYC của bạn đang trong quá trình xét duyệt. Bạn có thể liên hệ <a href="https://t.me/ChoOTCVN_support" target="_blank">@ChoOTCVN_support</a> để được hỗ trợ.
+              <v-text-field class="mt-3" :value="kyc_link" outlined readonly append-icon="mdi-content-copy"
+                @click:append="copyText" @click="copyText"></v-text-field>
+            </v-card>
+            <v-card class="pa-6" outlined v-if="account.verify == 'pending'">
+              <div class="d-flex align-start">
+                <v-icon color="orange">mdi-alert-outline</v-icon>
+                <div class="warning-msg ml-3">
+                  Yêu cầu KYC của bạn đang trong quá trình xét duyệt. Bạn có thể liên hệ <a
+                    href="https://t.me/ChoOTCVN_support" target="_blank">@ChoOTCVN_support</a> để được hỗ trợ.
+                </div>
               </div>
-            </div>
-          </v-card>
+            </v-card>
+          </div>
         </v-col>
         <v-col cols="12" md="4">
-          <h3 class="mb-3">Câu hỏi thường gặp</h3>
-          <v-expansion-panels>
-            <v-expansion-panel v-for="(item, i) in faq" :key="i">
-              <v-expansion-panel-header>
-                {{ item.answer }}
-              </v-expansion-panel-header>
-              <v-expansion-panel-content>
-                {{ item.question }}
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
+          <div class="faq">
+            <h3 class="mb-3">Câu hỏi thường gặp</h3>
+            <v-expansion-panels>
+              <v-expansion-panel v-for="(item, i) in faq" :key="i">
+                <v-expansion-panel-header>
+                  {{ item.answer }}
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  {{ item.question }}
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
+          </div>
         </v-col>
       </v-row>
     </v-container>

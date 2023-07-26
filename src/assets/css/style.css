@@ -17,6 +17,7 @@ html {
 main {
     margin-top: 80px;
     padding-top: 50px;
+    min-height: calc(100vh - 155px);
 }
 
 .theme--light.v-card {
@@ -40,7 +41,9 @@ label {
 .input-box {
     position: relative;
 }
-a{
+
+a {
+    /* color: #0584ec !important; */
     text-decoration: none;
 }
 
@@ -430,4 +433,7 @@ input.exchange-input:hover {
 .kyc {
     padding: 0;
     margin: 0;
+}
+.fz-14{
+    font-size: 14px;
 }

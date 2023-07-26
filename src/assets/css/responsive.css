@@ -1,6 +1,6 @@
 @media (min-width: 1904px) {
     .container {
-        max-width: 1260px;
+        max-width: 1360px;
     }
 }
 
@@ -16,8 +16,9 @@
     .logo {
         width: 130px;
     }
-    .profile{
-        padding: 0 20px;
+
+    .faq {
+        padding: 0 24px;
     }
 }
 
@@ -44,5 +45,13 @@
 
     .warning-msg {
         font-size: 14px;
+    }
+
+    .v-application footer .justify-end {
+        justify-content: center !important;
+    }
+
+    footer {
+        text-align: center;
     }
 }
