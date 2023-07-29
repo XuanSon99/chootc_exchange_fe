@@ -33,10 +33,33 @@
           <v-btn href="https://chootc.com/tin-tuc" target="_blank" text color="black">
             Tin tức
           </v-btn>
-
         </div>
 
-        <v-menu offset-y v-if="account" transition="slide-y-transition">
+        <v-menu offset-y v-if="account" transition="slide-y-transition" left>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon v-bind="attrs" v-on="on">
+              <v-badge :content="noti_count" color="error" overlap>
+                <v-icon size="30">mdi-bell-outline</v-icon>
+              </v-badge>
+            </v-btn>
+          </template>
+          <v-card max-width="360" max-height="680" class="notifi">
+            <v-list dense>
+              <v-list-item-group v-for="(item, index) in notifications" :key="index">
+                <v-list-item @click="readNoti(item.id)">
+                  <v-list-item-icon>
+                    <v-icon :color="item.color">mdi-account</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>{{ item.content }}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+          </v-card>
+        </v-menu>
+
+        <v-menu offset-y v-if="account" transition="slide-y-transition" left>
           <template v-slot:activator="{ on, attrs }">
             <v-btn icon v-bind="attrs" v-on="on" outlined class="ml-4" color="primary">
               <v-icon>
@@ -106,6 +129,8 @@ import { mapGetters } from "vuex";
 export default {
   data: () => ({
     drawer: false,
+    notifications: [],
+    noti_count: 0
   }),
   computed: {
     ...mapGetters(["account"]),
@@ -133,6 +158,7 @@ export default {
   },
   mounted() {
     this.getProfile()
+    this.getNotification()
   },
   methods: {
     getProfile() {
@@ -143,6 +169,19 @@ export default {
     logout() {
       localStorage.clear()
       this.$store.dispatch('setAccount', '')
+    },
+    getNotification() {
+      this.CallAPI("get", "notifications", {}, (res) => {
+        this.notifications = res.data
+      })
+      this.CallAPI("get", "count-noti", {}, (res) => {
+        this.noti_count = res.data;
+      })
+    },
+    readNoti(id) {
+      this.CallAPI("put", "read-noti", { id }, (res) => {
+        console.log(res.data);
+      })
     }
   }
 };
