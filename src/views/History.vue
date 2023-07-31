@@ -14,7 +14,7 @@
               <v-text-field v-model="buy_search" append-icon="mdi-magnify" label="Tìm kiếm" single-line
                 hide-details></v-text-field>
             </v-card-title>
-            <v-data-table :headers="buy_headers" :items="buy_order">
+            <v-data-table :headers="headers" :items="buy_order">
               <template v-slot:[`item.created_at`]="{ item }">
                 {{ formatDate(item.created_at) }}
               </template>
@@ -32,6 +32,9 @@
               <template v-slot:[`item.amount`]="{ item }">
                 {{ item.amount }} {{ item.token.toUpperCase() }}
               </template>
+              <template v-slot:[`item.actions`]="{ item }">
+                <v-btn color="default" @click="detailOrder(item)" small>Chi tiết</v-btn>
+              </template>
             </v-data-table>
           </v-tab-item>
           <v-tab-item>
@@ -41,7 +44,7 @@
               <v-text-field v-model="sell_search" append-icon="mdi-magnify" label="Tìm kiếm" single-line
                 hide-details></v-text-field>
             </v-card-title>
-            <v-data-table :headers="sell_headers" :items="sell_order">
+            <v-data-table :headers="headers" :items="sell_order">
               <template v-slot:[`item.created_at`]="{ item }">
                 {{ formatDate(item.created_at) }}
               </template>
@@ -59,11 +62,80 @@
               <template v-slot:[`item.amount`]="{ item }">
                 {{ item.amount }} {{ item.token.toUpperCase() }}
               </template>
+              <template v-slot:[`item.actions`]="{ item }">
+                <v-btn color="default" @click="detailOrder(item)" small>Chi tiết</v-btn>
+              </template>
             </v-data-table>
           </v-tab-item>
         </v-tabs-items>
       </v-card>
     </v-container>
+    <v-dialog v-model="dialog" max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span>Chi tiết giao dịch</span>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="dialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-divider></v-divider>
+        <div class="pa-6">
+          <v-simple-table>
+            <tbody>
+              <tr>
+                <td>Mã giao dịch:</td>
+                <td>{{ detail_order.code }}</td>
+              </tr>
+              <tr>
+                <td style="width: 150px;">Số lượng mua:</td>
+                <td class="upper-case">{{ formatMoney(detail_order.amount) }} {{ detail_order.token }} ({{ detail_order.network
+                }})</td>
+              </tr>
+              <tr>
+                <td>Tỷ giá:</td>
+                <td>{{ formatMoney(detail_order.rate) }} ₫</td>
+              </tr>
+              <tr>
+                <td>Thành tiền:</td>
+                <td>{{ formatMoney(detail_order.money) }} ₫</td>
+              </tr>
+              <tr>
+                <td>Phí blockchain:</td>
+                <td>{{ formatMoney(detail_order.fee) }} ₫</td>
+              </tr>
+              <tr v-if="detail_order.address">
+                <td>Ví nhận:</td>
+                <td>{{ detail_order.address }}</td>
+              </tr>
+              <tr v-if="detail_order.account_number">
+                <td>Ngân hàng nhận:</td>
+                <td>
+                  {{ detail_order.account_number }} - {{ detail_order.bank_name }} <br>
+                  {{ detail_order.owner_name }}
+                </td>
+              </tr>
+              <tr>
+                <td>Thời gian:</td>
+                <td>{{ formatDate(detail_order.created_at) }}</td>
+              </tr>
+              <tr>
+                <td>Mô tả:</td>
+                <td>{{ detail_order.description }}</td>
+              </tr>
+              <tr>
+                <td>Trạng thái:</td>
+                <td>
+                  <span v-if="stateDetail(detail_order.status)" :style="{ color: `${stateDetail(detail_order.status).color}` }">
+                    {{ stateDetail(detail_order.status).status }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </v-simple-table>
+        </div>
+      </v-card>
+    </v-dialog>
   </main>
 </template>
 
@@ -71,10 +143,11 @@
 export default {
   data() {
     return {
+      dialog: false,
       buy_search: '',
       sell_search: '',
       tab: 0,
-      buy_headers: [
+      headers: [
         {
           text: 'Mã giao dịch',
           value: 'code',
@@ -103,44 +176,18 @@ export default {
         {
           text: 'Trạng thái',
           value: 'status',
+          sortable: false,
+        },
+        {
+          text: 'Hoạt động',
+          value: 'actions',
           sortable: false,
         },
       ],
       buy_order: [],
-      sell_headers: [
-        {
-          text: 'Mã giao dịch',
-          value: 'code',
-          sortable: false,
-        },
-        {
-          text: 'Số lượng',
-          value: 'amount',
-          sortable: false,
-        },
-        {
-          text: 'Tỷ giá',
-          value: 'rate',
-          sortable: false,
-        },
-        {
-          text: 'Thành tiền',
-          value: 'money',
-          sortable: false,
-        },
-        {
-          text: 'Thời gian',
-          value: 'created_at',
-          sortable: false,
-        },
-        {
-          text: 'Trạng thái',
-          value: 'status',
-          sortable: false,
-        },
-      ],
       sell_order: [],
-      state_list: ''
+      state_list: '',
+      detail_order: '',
     }
   },
   mounted() {
@@ -165,6 +212,10 @@ export default {
       this.CallAPI('get', 'sell-order', {}, (res) => {
         this.sell_order = res.data
       })
+    },
+    detailOrder(item) {
+      this.dialog = true
+      this.detail_order = item
     },
     formatDate(date) {
       let d = new Date(date);

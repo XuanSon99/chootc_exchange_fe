@@ -330,7 +330,7 @@ export default {
         token: this.token,
         fee: Math.round(this.transfer_fee * this.usdt_price),
         network: this.network.value,
-        bank_name: this.bank.info.name,
+        bank_name: this.bank.info.short_name,
         account_number: this.bank.account,
         owner_name: this.bank.owner,
       }

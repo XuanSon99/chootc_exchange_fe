@@ -438,3 +438,57 @@ input.exchange-input:hover {
 .fz-14 {
     font-size: 14px;
 }
+
+.v-menu__content {
+    background: #fff;
+}
+
+.notification {
+    width: 360px;
+    height: 680px;
+}
+
+.notification .item {
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin: 1px 0;
+}
+.notification .item:first-child{
+    margin-top: 0;
+}
+
+.notification .item:hover {
+    background: #00000010;
+}
+
+.notification .item span {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    display: block;
+}
+
+.notification .time {
+    font-size: 12px;
+}
+
+.notification .item.unread {
+    background: #00000010;
+}
+
+.noti-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    border-bottom: 1px solid #00000010;
+}
+
+.noti-title span {
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    color: #01c77d;
+}

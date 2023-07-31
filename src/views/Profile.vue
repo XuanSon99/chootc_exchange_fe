@@ -27,6 +27,11 @@
         <v-col cols="12" md="8">
           <div class="mx-6">
             <v-row>
+              <v-col cols="12">
+                <label>Link giới thiệu</label>
+                <v-text-field :value="ref_link" outlined readonly append-icon="mdi-content-copy"
+                @click:append="copyText(ref_link)"></v-text-field>
+              </v-col>
               <v-col cols="12" md="5">
                 <label>Họ và tên</label>
                 <v-text-field v-model="name" outlined placeholder="Họ và tên">
@@ -60,7 +65,7 @@
                 </div>
               </div>
               <v-text-field class="mt-3" :value="kyc_link" outlined readonly append-icon="mdi-content-copy"
-                @click:append="copyText" @click="copyText"></v-text-field>
+                @click:append="copyText" @click="copyText(kyc_link)"></v-text-field>
             </v-card>
             <v-card class="pa-6" outlined v-if="account.verify == 'pending'">
               <div class="d-flex align-start">
@@ -126,7 +131,10 @@ export default {
     },
     kyc_link() {
       return `https://exchange.chootc.com/kyc/${this.account.phone}`
-    }
+    },
+    ref_link() {
+      return `https://exchange.chootc.com/register?ref=${this.account.phone}`
+    },
   },
   mounted() {
     this.getProfile()
@@ -140,9 +148,9 @@ export default {
         this.address = res.data.address
       }, (err) => localStorage.clear())
     },
-    copyText() {
+    copyText(value) {
       this.$toast.success('Copy thành công')
-      navigator.clipboard.writeText(this.kyc_link);
+      navigator.clipboard.writeText(value);
     },
     updateProfile() {
       let data = {
@@ -154,7 +162,7 @@ export default {
       this.CallAPI('post', 'update-profile', data, (res) => {
         this.$toast.success('Cập nhật thành công')
       })
-    }
+    },
   }
 };
 </script>
