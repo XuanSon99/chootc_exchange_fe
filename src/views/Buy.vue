@@ -92,8 +92,9 @@
                     v-if="error.includes('KYC')" small outlined>KYC ngay</v-btn>
                 </div>
               </div>
-              <v-btn color="primary" @click="orderHandle">
-                Xác nhận
+              <v-btn color="primary" @click="orderHandle" :disabled="loading" width="120px">
+                <v-progress-circular indeterminate v-if="loading" :width="3" :size="20"></v-progress-circular>
+                <span v-else>Xác nhận</span>
               </v-btn>
             </v-stepper-content>
 
@@ -109,7 +110,7 @@
                       <tbody>
                         <tr>
                           <td style="min-width: 130px;">Số lượng mua:</td>
-                          <td class="upper-case">{{ formatMoney(amount) }} {{ token }} ({{ network.value }})</td>
+                          <td class="upper-case">{{ amount }} {{ token }} ({{ network.value }})</td>
                         </tr>
                         <tr>
                           <td>Địa chỉ ví nhận:</td>
@@ -264,7 +265,8 @@ export default {
       bank: '',
       asset_list: '',
       interval: '',
-      error: ''
+      error: '',
+      loading: false
     }
   },
   computed: {
@@ -330,6 +332,7 @@ export default {
         this.error = "Địa chỉ ví không chính xác"
         return
       }
+      this.loading = true
 
       let data = {
         phone: this.account.phone,
@@ -343,6 +346,7 @@ export default {
         this.order_data = res.data.data
         this.price = this.order_data.rate
         this.step = 2
+        this.loading = false
       })
     },
     getPrice() {

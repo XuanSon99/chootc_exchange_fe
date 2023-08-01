@@ -80,7 +80,8 @@
                   <v-col cols="12" md="7">
                     <label>Ngân hàng nhận</label>
                     <v-autocomplete :items="bank_list" outlined return-object
-                      :item-text="item => item.code + ' - ' + item.name" v-model="bank.info">
+                      :item-text="item => item.code + ' - ' + item.name" v-model="bank.info"
+                      placeholder="Chọn ngân hàng của bạn">
                     </v-autocomplete>
                   </v-col>
                 </v-row>
@@ -98,8 +99,9 @@
                 </v-row>
                 <div class="error-msg" v-if="error">{{ error }}</div>
               </div>
-              <v-btn color="primary" @click="orderHandle">
-                Xác nhận
+              <v-btn color="primary" @click="orderHandle" :disabled="loading" width="120px">
+                <v-progress-circular indeterminate v-if="loading" :width="3" :size="20"></v-progress-circular>
+                <span v-else>Xác nhận</span>
               </v-btn>
             </v-stepper-content>
 
@@ -119,7 +121,7 @@
                         </tr>
                         <tr>
                           <td>Số lượng bán:</td>
-                          <td>{{ formatMoney(amount) }} {{ token.toUpperCase() }}</td>
+                          <td>{{ amount }} {{ token.toUpperCase() }}</td>
                         </tr>
                         <tr>
                           <td>Tỷ giá:</td>
@@ -280,7 +282,8 @@ export default {
       },
       wallet_address: "",
       interval: '',
-      error: ''
+      error: '',
+      loading: false
     }
   },
   computed: {
@@ -304,7 +307,6 @@ export default {
   mounted() {
     this.getPrice()
     this.getUsdtPrice()
-    this.getSetup()
     this.getAsset()
   },
   methods: {
@@ -323,6 +325,7 @@ export default {
         this.error = "Vui lòng nhập đủ thông tin"
         return
       }
+      this.loading = true
 
       let data = {
         phone: this.account.phone,
@@ -337,7 +340,12 @@ export default {
       this.CallAPI("post", "sell-order", data, (res) => {
         this.order_data = res.data.data
         this.price = this.order_data.rate
-        this.step = 2
+
+        this.CallAPI("get", "setup/" + this.network.value, {}, (res) => {
+          this.wallet_address = res.data.value
+          this.loading = false
+          this.step = 2
+        })
       })
     },
     getPrice() {
@@ -405,12 +413,6 @@ export default {
       let n = num.length < 8 ? this.randomNum(1, 3) : this.randomNum(2, 4)
       let result = num.slice(0, -n - 1);
       return result + this.randomNum(Math.pow(10, n), 9 * Math.pow(10, n))
-    },
-    getSetup() {
-      this.bank.info = this.bank_list[0]
-      this.CallAPI("get", "setup/address", {}, (res) => {
-        this.wallet_address = res.data.value
-      })
     },
   },
   watch: {

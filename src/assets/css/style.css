@@ -445,7 +445,8 @@ input.exchange-input:hover {
 
 .notification {
     width: 360px;
-    height: 680px;
+    height: auto;
+    max-height: 680px;
 }
 
 .notification .item {
