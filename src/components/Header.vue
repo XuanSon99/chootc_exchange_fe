@@ -15,24 +15,17 @@
 
         <div class="d-flex align-center" v-else>
           <v-btn @click="$router.push('/buy/usdt')" text color="black">
-            Mua
+            Giao dịch mua
           </v-btn>
 
           <v-btn @click="$router.push('/sell/usdt')" text color="black">
-            Bán
+            Giao dịch bán
           </v-btn>
 
           <v-btn @click="$router.push('/history')" text color="black">
-            Lịch sử
+            Lịch sử giao dịch
           </v-btn>
 
-          <v-btn href="http://chootc.com" target="_blank" text color="black">
-            Tỷ giá
-          </v-btn>
-
-          <v-btn href="https://chootc.com/tin-tuc" target="_blank" text color="black">
-            Tin tức
-          </v-btn>
         </div>
 
         <v-menu offset-y v-if="account" transition="slide-y-transition" left>
@@ -89,6 +82,14 @@
                   <v-list-item-title>Xác minh danh tính</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
+              <v-list-item @click="dialog = true">
+                <v-list-item-icon>
+                  <v-icon>mdi-lock-outline</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>Đổi mật khẩu</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
               <v-divider></v-divider>
               <v-list-item @click="logout">
                 <v-list-item-icon>
@@ -108,6 +109,11 @@
       </v-container>
 
     </v-app-bar>
+    <div class="top-note">
+      <a target="_blank" href="https://t.me/chootcvn">
+        Bạn có nhu cầu giao dịch số lượng lớn, tham gia ngay @chootcvn.
+      </a>
+    </div>
     <v-navigation-drawer v-model="drawer" temporary fixed>
       <div class="pa-4">
         <v-img class="logo" src="/img/logo-header.png"></v-img>
@@ -127,6 +133,39 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
+    <v-dialog v-model="dialog" max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span>Thay đổi mật khẩu</span>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="dialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-divider></v-divider>
+        <div class="pa-6">
+          <label>Mật khẩu cũ</label>
+          <v-text-field v-model="current_password" outlined placeholder="Nhập mật khẩu cũ"
+            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" @click:append="show1 = !show1"
+            :type="show1 ? 'text' : 'password'"></v-text-field>
+          <label class="mt-6">Mật khẩu mới</label>
+          <v-text-field v-model="password" outlined placeholder="Nhập mật khẩu mới"
+            :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" @click:append="show2 = !show2"
+            :type="show2 ? 'text' : 'password'"></v-text-field>
+          <label class="mt-6">Xác nhận mật khẩu</label>
+          <v-text-field v-model="re_password" outlined placeholder="Xác nhận mật khẩu"
+            :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'" @click:append="show3 = !show3"
+            :type="show3 ? 'text' : 'password'"></v-text-field>
+        </div>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn class="default" @click="dialog = false"> Hủy </v-btn>
+          <v-btn color="primary" @click="changePassword"> Xác nhận </v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -134,9 +173,16 @@
 import { mapGetters } from "vuex";
 export default {
   data: () => ({
+    dialog: false,
     drawer: false,
     notifications: [],
-    noti_count: 0
+    noti_count: 0,
+    current_password: "",
+    password: "",
+    re_password: "",
+    show1: "",
+    show2: "",
+    show3: ""
   }),
   computed: {
     ...mapGetters(["account"]),
@@ -166,6 +212,37 @@ export default {
     this.getProfile()
   },
   methods: {
+    changePassword() {
+      if (!this.current_password || !this.password) {
+        this.$toast.error("Vui lòng nhập đủ mật khẩu");
+        return;
+      }
+      if (this.password != this.re_password) {
+        this.$toast.error("Xác nhận mật khẩu không chính xác");
+        return;
+      }
+      if (this.password.length < 6) {
+        this.$toast.error("Mật khẩu tối thiểu 6 ký tự");
+        return;
+      }
+      this.CallAPI(
+        "post",
+        "change-password",
+        {
+          current_password: this.current_password,
+          password: this.password,
+        },
+        (response) => {
+          this.$toast.success("Đổi mật khẩu thành công");
+          this.dialog = false;
+          this.current_password = ""
+          this.password = ""
+          this.re_password = ""
+        }, (err) => {
+          this.$toast.error("Mật khẩu cũ không chính xác");
+        }
+      );
+    },
     getProfile() {
       this.CallAPI("get", "profile", {}, (res) => {
         this.$store.dispatch('setAccount', res.data)

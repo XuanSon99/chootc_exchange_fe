@@ -3,6 +3,12 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="8">
+          <div class="ml-6">
+            <v-tabs v-model="tab" :color="tab ? 'error' : 'primary'" background-color="transparent">
+              <v-tab value="0" @click="$router.push('/buy/usdt')">Tôi muốn mua</v-tab>
+              <v-tab value="1" @click="$router.push('/sell/usdt')">Tôi muốn bán</v-tab>
+            </v-tabs>
+          </div>
           <v-stepper v-model="step" vertical class="elevation-0">
             <v-stepper-step :complete="step > 1" step="1">
               BÁN {{ token.toUpperCase() }}
@@ -169,13 +175,13 @@
 
             <v-stepper-content step="3">
               <div class="mb-8">
-                <div class="d-flex align-center">
-                  <v-icon size="20" class="mr-1" color="primary">mdi-progress-check</v-icon>
-                  Đơn hàng của bạn đang được xử lý. Vui lòng chờ trong giây lát!
-                </div>
+                <label>Địa chỉ ví bạn vừa chuyển {{ token.toUpperCase() }}</label>
+                <v-text-field v-model="customer_address" outlined
+                  :placeholder="'Nhập địa chỉ ví bạn vừa chuyển ' + token.toUpperCase()">
+                </v-text-field>
               </div>
-              <v-btn color="primary" @click="step = 1">
-                Bán thêm
+              <v-btn color="primary" @click="completeHandle">
+                Hoàn thành
               </v-btn>
             </v-stepper-content>
           </v-stepper>
@@ -252,6 +258,7 @@ export default {
       order_data: '',
       asset_list: [],
       bank_list: banks,
+      customer_address: '',
       bank: {
         info: '',
         account: '',
@@ -322,7 +329,7 @@ export default {
       }
 
       if (!this.bank.account || !this.bank.owner) {
-        this.error = "Vui lòng nhập đủ thông tin"
+        this.error = "Vui lòng Đủ thông tin"
         return
       }
       this.loading = true
@@ -347,6 +354,29 @@ export default {
           this.step = 2
         })
       })
+    },
+    completeHandle() {
+      if (!this.customer_address) {
+        this.$toast.error('Vui lòng nhập địa chỉ ví')
+        return
+      }
+      if (this.network.value == 'trc20' && !this.validateTrc(this.customer_address)) {
+        this.$toast.error('Địa chỉ ví không chính xác')
+        return
+      }
+      if (this.network.value != 'trc20' && !this.validateErc(this.customer_address)) {
+        this.$toast.error('Địa chỉ ví không chính xác')
+        return
+      }
+      this.CallAPI("put", "update-address",
+        {
+          code: this.order_data.code,
+          customer_address: this.customer_address
+        },
+        (res) => {
+          this.step = 1
+          this.$toast.success('Giao dịch đang được xử lý')
+        })
     },
     getPrice() {
       this.price = 0;
@@ -413,6 +443,14 @@ export default {
       let n = num.length < 8 ? this.randomNum(1, 3) : this.randomNum(2, 4)
       let result = num.slice(0, -n - 1);
       return result + this.randomNum(Math.pow(10, n), 9 * Math.pow(10, n))
+    },
+    validateErc(address) {
+      let re = /^0x[a-fA-F0-9]{40}$/g
+      return re.test(address)
+    },
+    validateTrc(address) {
+      let re = /^T[A-Za-z1-9]{33}$/g
+      return re.test(address)
     },
   },
   watch: {

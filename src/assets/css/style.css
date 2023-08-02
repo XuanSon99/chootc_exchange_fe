@@ -15,9 +15,8 @@ html {
 }
 
 main {
-    margin-top: 80px;
-    padding-top: 50px;
-    min-height: calc(100vh - 155px);
+    padding-top: 80px;
+    min-height: calc(100vh - 175px);
 }
 
 .theme--light.v-card {
@@ -403,7 +402,7 @@ input.exchange-input:hover {
 }
 
 .noti p {
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 .img-preview {
@@ -456,7 +455,8 @@ input.exchange-input:hover {
     align-items: center;
     margin: 1px 0;
 }
-.notification .item:first-child{
+
+.notification .item:first-child {
     margin-top: 0;
 }
 
@@ -492,4 +492,19 @@ input.exchange-input:hover {
     font-weight: 500;
     cursor: pointer;
     color: #01c77d;
+}
+
+.main-color {
+    color: #01c77d;
+}
+
+.top-note {
+    margin-top: 68px;
+    background: #01c77d;
+    text-align: center;
+    padding: 5px 0;
+}
+
+.top-note a {
+    color: #fff !important;
 }

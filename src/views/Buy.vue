@@ -3,6 +3,12 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="8">
+          <div class="ml-6">
+            <v-tabs v-model="tab" :color="tab ? 'error' : 'primary'" background-color="transparent">
+              <v-tab value="0" @click="$router.push('/buy/usdt')">Tôi muốn mua</v-tab>
+              <v-tab value="1" @click="$router.push('/sell/usdt')">Tôi muốn bán</v-tab>
+            </v-tabs>
+          </div>
           <v-stepper v-model="step" vertical class="elevation-0">
             <v-stepper-step :complete="step > 1" step="1">
               MUA {{ token.toUpperCase() }}
@@ -90,6 +96,8 @@
                   </span>
                   <v-btn class="fz-14 ml-1 mt-2" color="primary" :to="'/kyc/' + account.phone"
                     v-if="error.includes('KYC')" small outlined>KYC ngay</v-btn>
+                  <v-btn class="fz-14 ml-1 mt-2" color="primary" to="/login" v-if="error.includes('đăng nhập')" small
+                    outlined>Đăng nhập</v-btn>
                 </div>
               </div>
               <v-btn color="primary" @click="orderHandle" :disabled="loading" width="120px">
@@ -162,9 +170,13 @@
 
             <v-stepper-content step="3">
               <div class="mb-8">
-                <div class="d-flex align-center">
-                  <v-icon size="20" class="mr-1" color="primary">mdi-progress-check</v-icon>
-                  Đơn hàng của bạn đang được xử lý. Vui lòng chờ trong giây lát!
+                <div class="d-flex align-start">
+                  <v-icon size="20" class="mt-1 mr-2" color="primary">mdi-progress-check</v-icon>
+                  <div>
+                    Giao dịch đang được xử lý. Vui lòng chờ trong giây lát! <br>
+                    Liên hệ <a href="https://t.me/ChoOTCVN_support" target="_blank">@ChoOTCVN_support</a>
+                    để được hỗ trợ.
+                  </div>
                 </div>
               </div>
               <v-btn color="primary" @click="step = 1">

@@ -67,6 +67,9 @@
             <p>
               Chúc mừng bạn đã gửi yêu cầu xác minh danh tính (KYC) thành công!
             </p>
+            <div class="text-center">
+              <v-btn color="primary" to="/" outlined>Trang chủ</v-btn>
+            </div>
           </div>
         </div>
         <div v-if="tab == 5" class="noti">
@@ -76,6 +79,9 @@
               Yêu cầu KYC đã được gửi trước đó. Vui lòng liên hệ hỗ trợ để được
               thông qua!
             </p>
+            <div class="text-center">
+              <v-btn color="primary" to="/" outlined>Trang chủ</v-btn>
+            </div>
           </div>
         </div>
       </section>
