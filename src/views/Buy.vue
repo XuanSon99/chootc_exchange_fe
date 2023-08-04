@@ -147,8 +147,7 @@
                       </tbody>
                     </v-simple-table>
                     <div class="note">
-                      * Vui lòng chuyển chính xác số tiền (kể cả số lẻ) và nội dung chuyển khoản. Liên hệ hỗ trợ để giao
-                      dịch nhanh hơn.
+                      * Vui lòng chuyển chính xác số tiền (kể cả số lẻ) và nội dung chuyển khoản. Quét mã QR bên trên để thanh toán nhanh hơn.
                     </div>
                   </v-col>
                   <v-col cols="12" md="4">

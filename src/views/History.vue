@@ -49,9 +49,9 @@
                 {{ formatDate(item.created_at) }}
               </template>
               <template v-slot:[`item.status`]="{ item }">
-                <p v-if="stateDetail(item.status)" :style="{ color: `${stateDetail(item.status).color}` }">
+                <span v-if="stateDetail(item.status)" :style="{ color: `${stateDetail(item.status).color}` }">
                   {{ stateDetail(item.status).status }}
-                </p>
+                </span>
               </template>
               <template v-slot:[`item.rate`]="{ item }">
                 {{ formatMoney(item.rate) }} ₫

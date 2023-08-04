@@ -508,3 +508,8 @@ input.exchange-input:hover {
 .top-note a {
     color: #fff !important;
 }
+.chat{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}

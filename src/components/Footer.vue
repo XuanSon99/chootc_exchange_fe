@@ -7,7 +7,7 @@
           © 2023 chootc.com. All rights reserved
         </v-col>
         <!-- <v-col cols="12" md="4"> -->
-          <!-- <div class="d-flex justify-center">
+        <!-- <div class="d-flex justify-center">
             <router-link to="/ve-chung-toi" class="px-5">Giới thiệu</router-link>
             <router-link to="/quy-dinh-chinh-sach" class="px-5">Quy định & chính xách</router-link>
           </div> -->
@@ -31,6 +31,11 @@
           </div>
         </v-col>
       </v-row>
+      <div class="chat">
+        <v-btn fab color="primary" class="elevation-0" href="https://t.me/ChoOTCVN_support" target="_blank">
+          <v-icon size="30">mdi-facebook-messenger</v-icon>
+        </v-btn>
+      </div>
     </v-container>
   </footer>
 </template>
