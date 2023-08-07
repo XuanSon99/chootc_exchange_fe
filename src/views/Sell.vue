@@ -147,7 +147,12 @@
                         </tr>
                         <tr>
                           <td>Ví thanh toán:</td>
-                          <td>{{ wallet_address }}</td>
+                          <td>
+                            {{ wallet_address }}
+                            <v-btn icon>
+                              <v-icon size="20" @click="copyText(wallet_address)">mdi-content-copy</v-icon>
+                            </v-btn>
+                          </td>
                         </tr>
                       </tbody>
                     </v-simple-table>
@@ -451,6 +456,10 @@ export default {
     validateTrc(address) {
       let re = /^T[A-Za-z1-9]{33}$/g
       return re.test(address)
+    },
+    copyText(value) {
+      this.$toast.success('Copy thành công')
+      navigator.clipboard.writeText(value);
     },
   },
   watch: {

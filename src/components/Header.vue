@@ -66,7 +66,7 @@
           </template>
           <v-list dense>
             <v-list-item-group color="primary">
-              <v-list-item @click="$router.push('/profile')">
+              <v-list-item @click="$router.push('/profile')" v-if="account.verify">
                 <v-list-item-icon>
                   <v-icon>mdi-account</v-icon>
                 </v-list-item-icon>
@@ -74,7 +74,7 @@
                   <v-list-item-title>Thông tin tài khoản</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <v-list-item @click="$router.push('/kyc/' + account.phone)" v-if="!account.verify">
+              <v-list-item @click="$router.push('/profile')" v-else>
                 <v-list-item-icon>
                   <v-icon>mdi-shield-account-outline</v-icon>
                 </v-list-item-icon>

@@ -30,7 +30,7 @@
               <v-col cols="12">
                 <label>Link giới thiệu</label>
                 <v-text-field :value="ref_link" outlined readonly append-icon="mdi-content-copy"
-                @click:append="copyText(ref_link)"></v-text-field>
+                  @click:append="copyText(ref_link)"></v-text-field>
               </v-col>
               <v-col cols="12" md="5">
                 <label>Họ và tên</label>
@@ -65,7 +65,8 @@
                 </div>
               </div>
               <v-text-field class="mt-3" :value="kyc_link" outlined readonly append-icon="mdi-content-copy"
-                @click:append="copyText" @click="copyText(kyc_link)"></v-text-field>
+                @click:append="copyText" @click="copyText(kyc_link)" v-if="!mobile"></v-text-field>
+              <v-btn :to="'/kyc/' + account.phone" color="primary" class="mt-3" block outlined v-else>Xác minh danh tính</v-btn>
             </v-card>
             <v-card class="pa-6" outlined v-if="account.verify == 'pending'">
               <div class="d-flex align-start">
@@ -135,6 +136,9 @@ export default {
     ref_link() {
       return `https://exchange.chootc.com/register?ref=${this.account.phone}`
     },
+    mobile() {
+      return this.$vuetify.breakpoint.width < 1025
+    }
   },
   mounted() {
     this.getProfile()

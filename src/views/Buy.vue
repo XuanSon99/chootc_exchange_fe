@@ -130,7 +130,12 @@
                         </tr>
                         <tr>
                           <td>Số tiền cần trả:</td>
-                          <td>{{ formatMoney(order_data.money) }} VNĐ</td>
+                          <td>
+                            {{ formatMoney(order_data.money) }} VNĐ
+                            <v-btn icon>
+                              <v-icon size="20" @click="copyText(order_data.money)">mdi-content-copy</v-icon>
+                            </v-btn>
+                          </td>
                         </tr>
                         <tr>
                           <td>STK thanh toán:</td>
@@ -138,16 +143,25 @@
                             {{ bank[2] }} - {{ bank[1] }}
                             <br>
                             {{ bank[0] }}
+                            <v-btn icon>
+                              <v-icon size="20" @click="copyText(bank[2])">mdi-content-copy</v-icon>
+                            </v-btn>
                           </td>
                         </tr>
                         <tr>
                           <td>Nội dung CK:</td>
-                          <td>{{ order_data.code }}</td>
+                          <td>
+                            {{ order_data.code }}
+                            <v-btn icon>
+                              <v-icon size="20" @click="copyText(order_data.code)">mdi-content-copy</v-icon>
+                            </v-btn>
+                          </td>
                         </tr>
                       </tbody>
                     </v-simple-table>
                     <div class="note">
-                      * Vui lòng chuyển chính xác số tiền (kể cả số lẻ) và nội dung chuyển khoản. Quét mã QR bên trên để thanh toán nhanh hơn.
+                      * Vui lòng chuyển chính xác số tiền (kể cả số lẻ) và nội dung chuyển khoản. Quét mã QR bên trên để
+                      thanh toán nhanh hơn.
                     </div>
                   </v-col>
                   <v-col cols="12" md="4">
@@ -440,6 +454,10 @@ export default {
     validateTrc(address) {
       let re = /^T[A-Za-z1-9]{33}$/g
       return re.test(address)
+    },
+    copyText(value) {
+      this.$toast.success('Copy thành công')
+      navigator.clipboard.writeText(value);
     },
   },
   watch: {
