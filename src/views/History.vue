@@ -88,7 +88,7 @@
                 <td>{{ detail_order.code }}</td>
               </tr>
               <tr>
-                <td style="width: 150px;">Số lượng mua:</td>
+                <td style="width: 150px;">Số lượng:</td>
                 <td class="upper-case">{{ formatMoney(detail_order.amount) }} {{ detail_order.token }} ({{ detail_order.network
                 }})</td>
               </tr>
@@ -119,7 +119,7 @@
                 <td>Thời gian:</td>
                 <td>{{ formatDate(detail_order.created_at) }}</td>
               </tr>
-              <tr>
+              <tr v-if="detail_order.description">
                 <td>Mô tả:</td>
                 <td>{{ detail_order.description }}</td>
               </tr>

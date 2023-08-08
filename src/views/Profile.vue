@@ -65,7 +65,7 @@
                 </div>
               </div>
               <v-text-field class="mt-3" :value="kyc_link" outlined readonly append-icon="mdi-content-copy"
-                @click:append="copyText" @click="copyText(kyc_link)" v-if="!mobile"></v-text-field>
+                @click:append="copyText(kyc_link)" @click="copyText(kyc_link)" v-if="!mobile"></v-text-field>
               <v-btn :to="'/kyc/' + account.phone" color="primary" class="mt-3" block outlined v-else>Xác minh danh tính</v-btn>
             </v-card>
             <v-card class="pa-6" outlined v-if="account.verify == 'pending'">
