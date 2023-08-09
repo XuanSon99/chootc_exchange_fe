@@ -182,7 +182,8 @@ export default {
     re_password: "",
     show1: "",
     show2: "",
-    show3: ""
+    show3: "",
+    interval: '',
   }),
   computed: {
     ...mapGetters(["account"]),
@@ -210,6 +211,9 @@ export default {
   },
   mounted() {
     this.getProfile()
+    this.interval = setInterval(() => {
+      this.getAmountNoti()
+    }, 20000);
   },
   methods: {
     changePassword() {
@@ -259,7 +263,13 @@ export default {
     },
     getAmountNoti() {
       this.CallAPI("get", "count-noti", {}, (res) => {
-        this.noti_count = res.data;
+        if (this.noti_count < res.data) {
+          this.noti_count = res.data;
+          this.getNotification()
+        }
+        if (this.noti_count > res.data) {
+          this.noti_count = res.data;
+        }
       })
     },
     readNoti(item, index) {
@@ -285,10 +295,12 @@ export default {
   watch: {
     account() {
       if (this.account.phone) {
-        this.getNotification()
         this.getAmountNoti()
       }
     }
-  }
+  },
+  beforeDestroy() {
+    clearInterval(this.interval);
+  },
 };
 </script>
