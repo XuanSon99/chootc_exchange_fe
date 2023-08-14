@@ -262,6 +262,7 @@ export default {
       })
     },
     getAmountNoti() {
+      if(!this.account) return
       this.CallAPI("get", "count-noti", {}, (res) => {
         if (this.noti_count < res.data) {
           this.noti_count = res.data;

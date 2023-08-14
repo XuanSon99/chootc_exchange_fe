@@ -318,7 +318,6 @@ export default {
   },
   mounted() {
     this.getPrice()
-    this.getUsdtPrice()
     this.getAsset()
   },
   methods: {
@@ -386,6 +385,7 @@ export default {
     getPrice() {
       this.price = 0;
       this.token = this.$route.params.id
+      this.loading = true
       const params = `p2p?type=sell&asset=${this.$route.params.id}&fiat=vnd`;
       this.CallAPI("get", params, {}, (res) => {
         this.price = Number(res.data.data[4].adv.price);
@@ -401,13 +401,8 @@ export default {
         if (this.token == "usdt") {
           this.usdt_price = Number(res.data.data[4].adv.price);
         }
+        this.loading = false
         this.inputAmount();
-      });
-    },
-    getUsdtPrice() {
-      const params = `p2p?type=sell&asset=usdt&fiat=vnd`;
-      this.CallAPI("get", params, {}, (res) => {
-        this.usdt_price = Number(res.data.data[4].adv.price);
       });
     },
     inputAmount() {
@@ -433,6 +428,9 @@ export default {
             if (['btc', 'eth', 'bnb'].includes(item.symbol)) {
               buy_rate = this.dynamicNum(item.buy_rate)
               sell_rate = this.dynamicNum(item.sell_rate)
+            }
+            if(item.symbol == 'usdt' && this.token != "usdt"){
+              this.usdt_price = item.sell_rate
             }
             this.asset_list.push({
               symbol: item.symbol,
