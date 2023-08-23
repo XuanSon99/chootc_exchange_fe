@@ -313,7 +313,7 @@ export default {
         }
         return 0
       }
-      return (this.network.fee - 1).toFixed(2)
+      return 10
     },
   },
   mounted() {
@@ -389,15 +389,6 @@ export default {
       const params = `p2p?type=sell&asset=${this.$route.params.id}&fiat=vnd`;
       this.CallAPI("get", params, {}, (res) => {
         this.price = Number(res.data.data[4].adv.price);
-        if (this.token == "btc") {
-          this.price = Number(res.data.data[4].adv.price) - 5000000;
-        }
-        if (this.token == "eth") {
-          this.price = Number(res.data.data[4].adv.price) - 300000;
-        }
-        if (this.token == "bnb") {
-          this.price = Number(res.data.data[4].adv.price) - 50000;
-        }
         if (this.token == "usdt") {
           this.usdt_price = Number(res.data.data[4].adv.price);
         }

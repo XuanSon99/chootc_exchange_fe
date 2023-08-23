@@ -175,7 +175,7 @@ export default {
   data: () => ({
     dialog: false,
     drawer: false,
-    notifications: [],
+    notifications: "",
     noti_count: 0,
     current_password: "",
     password: "",
@@ -262,15 +262,18 @@ export default {
       })
     },
     getAmountNoti() {
-      if(!this.account) return
+      if (!this.account) return
       this.CallAPI("get", "count-noti", {}, (res) => {
         if (this.noti_count < res.data) {
           this.noti_count = res.data;
           this.getNotification()
+          this.$toast.success('Bạn vừa có thông báo mới!')
+          return
         }
-        if (this.noti_count > res.data) {
-          this.noti_count = res.data;
+        if (!this.notifications) {
+          this.getNotification()
         }
+        this.noti_count = res.data;
       })
     },
     readNoti(item, index) {
