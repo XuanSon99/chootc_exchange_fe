@@ -267,7 +267,7 @@ export default {
         if (this.noti_count < res.data) {
           this.noti_count = res.data;
           this.getNotification()
-          this.$toast.success('Bạn vừa có thông báo mới!')
+          // this.$toast.success('Bạn vừa có thông báo mới!')
           return
         }
         if (!this.notifications) {
