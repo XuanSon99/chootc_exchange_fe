@@ -267,7 +267,6 @@ export default {
         if (this.noti_count < res.data) {
           this.noti_count = res.data;
           this.getNotification()
-          // this.$toast.success('Bạn vừa có thông báo mới!')
           return
         }
         if (!this.notifications) {
@@ -300,6 +299,9 @@ export default {
     account() {
       if (this.account.phone) {
         this.getAmountNoti()
+      } else {
+        this.notifications = []
+        this.noti_count = 0
       }
     }
   },

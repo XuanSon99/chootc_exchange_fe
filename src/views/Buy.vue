@@ -94,9 +94,9 @@
                   <span class="error-msg">
                     {{ error }}
                   </span>
-                  <v-btn class="fz-14 ml-1 mt-2" color="primary" :to="'/kyc/' + account.phone"
+                  <v-btn class="fz-14 ml-2 mt-2" color="primary" :to="'/profile'"
                     v-if="error.includes('KYC')" small outlined>KYC ngay</v-btn>
-                  <v-btn class="fz-14 ml-1 mt-2" color="primary" to="/login" v-if="error.includes('đăng nhập')" small
+                  <v-btn class="fz-14 ml-2 mt-2" color="primary" to="/login" v-if="error.includes('đăng nhập')" small
                     outlined>Đăng nhập</v-btn>
                 </div>
               </div>
@@ -322,15 +322,13 @@ export default {
   },
   methods: {
     orderHandle() {
-      if (this.money > 25000000) {
-        if (!this.account) {
-          this.error = 'Hạn mức mua tối đa là 25 triệu. Hãy đăng nhập để tăng hạn mức'
-          return
-        }
-        if (this.account.verify != 'success') {
-          this.error = 'Hạn mức mua tối đa là 25 triệu. Hãy KYC để tăng hạn mức'
-          return
-        }
+      if (!this.account) {
+        this.error = 'Vui lòng đăng nhập trước khi thực hiện giao dịch mua'
+        return
+      }
+      if (this.account.verify != 'success') {
+        this.error = 'Vui lòng KYC để thực hiện giao dịch mua'
+        return
       }
 
       if (this.money < 1000000) {
@@ -433,7 +431,7 @@ export default {
     },
     getSetup() {
       this.CallAPI("get", "setup/bank", {}, (res) => {
-        this.bank = res.data.value.split("\r\n")
+        this.bank = res.data.value.split("-")
       })
     },
     validateErc(address) {

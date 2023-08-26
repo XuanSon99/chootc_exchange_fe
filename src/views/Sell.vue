@@ -86,7 +86,7 @@
                   <v-col cols="12" md="7">
                     <label>Ngân hàng nhận</label>
                     <v-autocomplete :items="bank_list" outlined return-object
-                      :item-text="item => item.code + ' - ' + item.name" v-model="bank.info"
+                      :item-text="item => item.code + ' - ' + item.short_name + ' - ' + item.name" v-model="bank.info"
                       placeholder="Chọn ngân hàng của bạn">
                     </v-autocomplete>
                   </v-col>
