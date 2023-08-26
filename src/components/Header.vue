@@ -255,6 +255,7 @@ export default {
     logout() {
       localStorage.clear()
       this.$store.dispatch('setAccount', '')
+      this.$router.push("/")
     },
     getNotification() {
       this.CallAPI("get", "notifications", {}, (res) => {
