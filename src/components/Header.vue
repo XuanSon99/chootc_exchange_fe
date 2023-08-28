@@ -26,6 +26,10 @@
             Lịch sử giao dịch
           </v-btn>
 
+          <v-btn @click="$router.push('/referral')" text color="black">
+            Chương trình giới thiệu
+          </v-btn>
+
         </div>
 
         <v-menu offset-y v-if="account" transition="slide-y-transition" left>
@@ -194,8 +198,9 @@ export default {
       ]
       if (this.account) {
         nav.push(
-          { text: 'Lịch sử', icon: 'mdi-history ', url: '/history' },
+          { text: 'Lịch sử giao dịch', icon: 'mdi-clipboard-text-clock', url: '/history' },
           { text: 'Thông tin tài khoản', icon: 'mdi-account', url: '/profile' },
+          { text: 'Chương trình giới thiệu', icon: 'mdi-bookmark-multiple', url: '/referral' },
         )
       } else {
         nav.push(

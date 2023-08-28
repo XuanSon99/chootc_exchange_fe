@@ -498,6 +498,10 @@ input.exchange-input:hover {
     color: #01c77d;
 }
 
+.error-color {
+    color: #ff5252;
+}
+
 .top-note {
     margin-top: 68px;
     background: #01c77d;
@@ -508,8 +512,18 @@ input.exchange-input:hover {
 .top-note a {
     color: #fff !important;
 }
-.chat{
+
+.chat {
     position: fixed;
     bottom: 20px;
     right: 20px;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.ref-link {
+    width: 500px;
+    margin: 0 auto;
 }

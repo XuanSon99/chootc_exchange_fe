@@ -64,4 +64,16 @@
     .top-note a {
         font-size: 14px;
     }
+
+    .ref-link {
+        width: 100%;
+    }
+
+    .filter-date{
+        margin-top: 10px;
+        width: 250px;
+    }
+    .filter-date .v-input input{
+        font-size: 14px;
+    }
 }

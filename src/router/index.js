@@ -8,7 +8,7 @@ Vue.use(Meta);
 const routes = [
   {
     name: "Home",
-    path: "/",
+    path: "*",
     component: () => import("../views/Buy.vue"),
     meta: {
       header: true,
@@ -46,6 +46,14 @@ const routes = [
     name: "History",
     path: "/history",
     component: () => import("../views/History.vue"),
+    meta: {
+      header: true,
+    },
+  },
+  {
+    name: "Referral",
+    path: "/referral",
+    component: () => import("../views/RefOrder.vue"),
     meta: {
       header: true,
     },
@@ -101,6 +109,7 @@ router.beforeEach((to, from, next) => {
   if (to.name == 'History' && !localStorage.getItem("access_token")) next({ name: 'Login' })
   if (to.name == 'Error' && !localStorage.getItem("access_token")) next({ name: 'Login' })
   if (to.name == 'Profile' && !localStorage.getItem("access_token")) next({ name: 'Login' })
+  if (to.name == 'Referral' && !localStorage.getItem("access_token")) next({ name: 'Login' })
   next()
 })
 
