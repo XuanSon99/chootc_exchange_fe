@@ -270,12 +270,7 @@ export default {
     getAmountNoti() {
       if (!this.account) return
       this.CallAPI("get", "count-noti", {}, (res) => {
-        if (this.noti_count < res.data) {
-          this.noti_count = res.data;
-          this.getNotification()
-          return
-        }
-        if (!this.notifications) {
+        if (this.noti_count < res.data || !this.notifications[0]) {
           this.getNotification()
         }
         this.noti_count = res.data;
@@ -307,7 +302,6 @@ export default {
         this.getAmountNoti()
       } else {
         this.notifications = []
-        this.noti_count = 0
       }
     }
   },
