@@ -71,8 +71,9 @@
                       </template>
                     </v-text-field>
                     <div class="estimated">
-                      Phí blockchain:
+                      Phí:
                       <span>{{ transfer_fee }} USDT ≈ {{ formatMoney(transfer_fee * usdt_price) }} VND</span>
+                      (Bao gồm cả phí blockchain)
                     </div>
                   </v-col>
                 </v-row>
