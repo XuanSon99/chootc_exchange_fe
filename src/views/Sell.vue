@@ -180,15 +180,32 @@
             </v-stepper-step>
 
             <v-stepper-content step="3">
-              <div class="mb-8">
-                <label>Địa chỉ ví bạn vừa chuyển {{ token.toUpperCase() }}</label>
-                <v-text-field v-model="customer_address" outlined
-                  :placeholder="'Nhập địa chỉ ví bạn vừa chuyển ' + token.toUpperCase()">
-                </v-text-field>
+              <div v-if="is_waiting">
+                <div class="mb-8">
+                  <div class="d-flex align-start">
+                    <v-icon size="20" class="mt-1 mr-2" color="primary">mdi-progress-check</v-icon>
+                    <div>
+                      Giao dịch đang được xử lý. Vui lòng chờ trong giây lát! <br>
+                      Liên hệ <a href="https://t.me/ChoOTCVN_support" target="_blank">@ChoOTCVN_support</a>
+                      để được hỗ trợ.
+                    </div>
+                  </div>
+                </div>
+                <v-btn color="primary" @click="step = 1">
+                  Bán thêm
+                </v-btn>
               </div>
-              <v-btn color="primary" @click="completeHandle">
-                Hoàn thành
-              </v-btn>
+              <div v-else>
+                <div class="mb-8">
+                  <label>Địa chỉ ví bạn vừa chuyển {{ token.toUpperCase() }}</label>
+                  <v-text-field v-model="customer_address" outlined
+                    :placeholder="'Nhập địa chỉ ví bạn vừa chuyển ' + token.toUpperCase()">
+                  </v-text-field>
+                </div>
+                <v-btn color="primary" @click="completeHandle">
+                  Hoàn thành
+                </v-btn>
+              </div>
             </v-stepper-content>
           </v-stepper>
         </v-col>
@@ -296,7 +313,8 @@ export default {
       wallet_address: "",
       interval: '',
       error: '',
-      loading: false
+      loading: false,
+      is_waiting: false
     }
   },
   computed: {
@@ -379,8 +397,7 @@ export default {
           customer_address: this.customer_address
         },
         (res) => {
-          this.step = 1
-          this.$toast.success('Giao dịch đang được xử lý')
+          this.is_waiting = true
         })
     },
     getPrice() {
@@ -421,7 +438,7 @@ export default {
               buy_rate = this.dynamicNum(item.buy_rate)
               sell_rate = this.dynamicNum(item.sell_rate)
             }
-            if(item.symbol == 'usdt' && this.token != "usdt"){
+            if (item.symbol == 'usdt' && this.token != "usdt") {
               this.usdt_price = item.sell_rate
             }
             this.asset_list.push({
