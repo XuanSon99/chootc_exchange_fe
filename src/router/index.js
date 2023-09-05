@@ -44,7 +44,7 @@ const routes = [
   },
   {
     name: "History",
-    path: "/history",
+    path: "/history/:id",
     component: () => import("../views/History.vue"),
     meta: {
       header: true,

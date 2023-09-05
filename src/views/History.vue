@@ -3,8 +3,8 @@
     <v-container>
       <v-card>
         <v-tabs v-model="tab" :color="tab ? 'error' : 'primary'" class="px-4 pt-4" background-color="transparent">
-          <v-tab value="0">Giao dịch mua</v-tab>
-          <v-tab value="1">Giao dịch bán</v-tab>
+          <v-tab value="0" @click="$router.push('/history/buy')">Giao dịch mua</v-tab>
+          <v-tab value="1" @click="$router.push('/history/sell')">Giao dịch bán</v-tab>
         </v-tabs>
         <v-tabs-items v-model="tab">
           <v-tab-item>
@@ -89,7 +89,8 @@
               </tr>
               <tr>
                 <td style="width: 150px;">Số lượng:</td>
-                <td class="upper-case">{{ formatMoney(detail_order.amount) }} {{ detail_order.token }} ({{ detail_order.network
+                <td class="upper-case">{{ formatMoney(detail_order.amount) }} {{ detail_order.token }} ({{
+                  detail_order.network
                 }})</td>
               </tr>
               <tr>
@@ -126,7 +127,8 @@
               <tr>
                 <td>Trạng thái:</td>
                 <td>
-                  <span v-if="stateDetail(detail_order.status)" :style="{ color: `${stateDetail(detail_order.status).color}` }">
+                  <span v-if="stateDetail(detail_order.status)"
+                    :style="{ color: `${stateDetail(detail_order.status).color}` }">
                     {{ stateDetail(detail_order.status).status }}
                   </span>
                 </td>
@@ -196,6 +198,12 @@ export default {
     this.CallAPI("get", "states", {}, (res) => {
       this.state_list = res.data;
     });
+    if (this.$route.params.id == 'sell') {
+      this.tab = 1
+    }
+    if (this.$route.params.id == 'buy') {
+      this.tab = 0
+    }
   },
   methods: {
     stateDetail(id) {
@@ -227,6 +235,16 @@ export default {
         .toString()
         .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
+  },
+  watch: {
+    '$route.params.id'() {
+      if (this.$route.params.id == 'sell') {
+        this.tab = 1
+      }
+      if (this.$route.params.id == 'buy') {
+        this.tab = 0
+      }
+    }
   }
 };
 </script>

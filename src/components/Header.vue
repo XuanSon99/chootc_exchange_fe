@@ -22,7 +22,7 @@
             Giao dịch bán
           </v-btn>
 
-          <v-btn @click="$router.push('/history')" text color="black">
+          <v-btn @click="$router.push('/history/buy')" text color="black">
             Lịch sử giao dịch
           </v-btn>
 
