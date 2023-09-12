@@ -197,9 +197,8 @@
               </div>
               <div v-else>
                 <div class="mb-8">
-                  <label>Địa chỉ ví bạn vừa chuyển {{ token.toUpperCase() }}</label>
-                  <v-text-field v-model="customer_address" outlined
-                    :placeholder="'Nhập địa chỉ ví bạn vừa chuyển ' + token.toUpperCase()">
+                  <label>Txhash/ ID giao dịch:</label>
+                  <v-text-field v-model="customer_address" outlined placeholder="Nhập Txhash hoặc ID giao dịch">
                   </v-text-field>
                 </div>
                 <v-btn color="primary" @click="completeHandle">
@@ -346,6 +345,11 @@ export default {
         return
       }
 
+      if (this.money > 50000000) {
+        this.error = 'Hạn mức giao dịch tối đa là 50 triệu'
+        return
+      }
+
       if (!this.amount) {
         this.error = "Vui lòng nhập số lượng cần mua"
         return
@@ -380,17 +384,28 @@ export default {
     },
     completeHandle() {
       if (!this.customer_address) {
-        this.$toast.error('Vui lòng nhập địa chỉ ví')
+        this.$toast.error('Vui lòng nhập Txhash/ ID giao dịch')
         return
       }
-      if (this.network.value == 'trc20' && !this.validateTrc(this.customer_address)) {
-        this.$toast.error('Địa chỉ ví không chính xác')
+      // if (this.network.value == 'trc20' && !this.validateTrc(this.customer_address)) {
+      //   this.$toast.error('Địa chỉ ví không chính xác')
+      //   return
+      // }
+      // if (this.network.value != 'trc20' && !this.validateErc(this.customer_address)) {
+      //   this.$toast.error('Địa chỉ ví không chính xác')
+      //   return
+      // }
+
+      if (this.network.value == 'trc20' && this.customer_address.length != 64) {
+        this.$toast.error('Txhash/ ID giao dịch không chính xác')
         return
       }
-      if (this.network.value != 'trc20' && !this.validateErc(this.customer_address)) {
-        this.$toast.error('Địa chỉ ví không chính xác')
+
+      if (this.network.value != 'trc20' && this.customer_address.length != 66) {
+        this.$toast.error('Txhash/ ID giao dịch không chính xác')
         return
       }
+
       this.CallAPI("put", "update-address",
         {
           code: this.order_data.code,

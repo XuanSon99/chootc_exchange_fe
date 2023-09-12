@@ -337,6 +337,11 @@ export default {
         return
       }
 
+      if (this.money > 50000000) {
+        this.error = 'Hạn mức giao dịch tối đa là 50 triệu'
+        return
+      }
+
       if (!this.amount) {
         this.error = "Vui lòng nhập số lượng cần mua"
         return
