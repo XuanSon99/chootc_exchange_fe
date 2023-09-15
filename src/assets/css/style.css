@@ -527,3 +527,7 @@ input.exchange-input:hover {
     width: 500px;
     margin: 0 auto;
 }
+
+.message {
+    color: #fff;
+}

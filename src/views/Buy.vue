@@ -27,8 +27,7 @@
                           </v-icon>
                         </template>
                         <div class="tooltip my-1">
-                          Hạn mức giao dịch mua mặc định là 1 - 25 triệu. <br> Hãy đăng ký tài khoản và xác minh danh tính
-                          <br> để tăng hạn mức giao dịch
+                          Hạn mức giao dịch mua mặc định là 1 - 50 triệu.
                         </div>
                       </v-tooltip>
                     </div>
@@ -95,10 +94,12 @@
                   <span class="error-msg">
                     {{ error }}
                   </span>
-                  <v-btn class="fz-14 ml-2 mt-2" color="primary" :to="'/profile'"
-                    v-if="error.includes('KYC')" small outlined>KYC ngay</v-btn>
+                  <v-btn class="fz-14 ml-2 mt-2" color="primary" :to="'/profile'" v-if="error.includes('KYC')" small
+                    outlined>KYC ngay</v-btn>
                   <v-btn class="fz-14 ml-2 mt-2" color="primary" to="/login" v-if="error.includes('đăng nhập')" small
                     outlined>Đăng nhập</v-btn>
+                  <a class="ml-1 mt-2 fz-14" href="https://t.me/chootcvn" target="_blank"
+                    v-if="error.includes('tối đa')">@chootcvn</a>
                 </div>
               </div>
               <v-btn color="primary" @click="orderHandle" :disabled="loading" width="120px">
@@ -338,7 +339,7 @@ export default {
       }
 
       if (this.money > 50000000) {
-        this.error = 'Hạn mức giao dịch tối đa là 50 triệu'
+        this.error = 'Hạn mức giao dịch tối đa là 50 triệu. Mua số lượng lớn tại'
         return
       }
 
@@ -368,7 +369,7 @@ export default {
         network: this.network.value,
         address: this.address,
         token: this.token,
-        fee: Math.round(this.transfer_fee * this.usdt_price),
+        fee: this.transfer_fee,
       }
       this.CallAPI("post", "buy-order", data, (res) => {
         this.order_data = res.data.data

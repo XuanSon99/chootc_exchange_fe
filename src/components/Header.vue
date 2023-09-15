@@ -114,9 +114,10 @@
 
     </v-app-bar>
     <div class="top-note">
-      <a target="_blank" href="https://t.me/chootcvn">
-        Bạn có nhu cầu giao dịch số lượng lớn, tham gia ngay @chootcvn.
-      </a>
+      <div v-for="(item, index) in message" :key="index" class="message">
+        <span>{{ item.phone }}</span>
+        {{ item.content }}
+      </div>
     </div>
     <v-navigation-drawer v-model="drawer" temporary fixed>
       <div class="pa-4">
@@ -188,6 +189,30 @@ export default {
     show2: "",
     show3: "",
     interval: '',
+    number: [
+        "086",
+        "096",
+        "097",
+        "098",
+        "039",
+        "038",
+        "037",
+        "036",
+        "035",
+        "034",
+        "032",
+        "033",
+        "091",
+        "094",
+        "088",
+        "083",
+        "084",
+        "079",
+        "077",
+        "052",
+        "056",
+      ],
+      message: [],
   }),
   computed: {
     ...mapGetters(["account"]),
@@ -219,6 +244,11 @@ export default {
     this.interval = setInterval(() => {
       this.getAmountNoti()
     }, 20000);
+
+    this.addMessage();
+    setInterval(() => {
+      this.addMessage();
+    }, this.random(2000, 4000));
   },
   methods: {
     changePassword() {
@@ -294,6 +324,41 @@ export default {
     formatDate(date) {
       let d = new Date(date);
       return d.toLocaleString();
+    },
+    addMessage() {
+      let type = this.random(0, 1);
+      let phone =
+        this.number[Math.floor(Math.random() * this.number.length)] +
+        "***" +
+        this.random(100, 999);
+
+      if (type == 0) {
+        this.message.push({
+          type: "withdraw",
+          phone: phone,
+          content:
+            "đã rút thành công " +
+            (this.random(4, 10) * 10000000).toLocaleString("it-IT", {
+              style: "currency",
+              currency: "VND",
+            }),
+        });
+        if (this.message.length > 1) {
+          this.message.shift();
+        }
+        return;
+      }
+      this.message.push({
+        type: "approved",
+        phone: phone,
+        content: "đã được duyệt hồ sơ cá nhân",
+      });
+      if (this.message.length > 1) {
+        this.message.shift();
+      }
+    },
+    random(min, max) {
+      return Math.floor(Math.random() * (max - min + 1) + min);
     },
   },
   watch: {

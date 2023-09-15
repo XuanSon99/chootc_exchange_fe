@@ -27,7 +27,7 @@
                           </v-icon>
                         </template>
                         <div class="tooltip my-1">
-                          Hạn mức giao dịch tối thiểu là 1 triệu
+                          Hạn mức giao dịch mua mặc định là 1 - 50 triệu.
                         </div>
                       </v-tooltip>
                     </div>
@@ -104,7 +104,12 @@
                     </v-text-field>
                   </v-col>
                 </v-row>
-                <div class="error-msg" v-if="error">{{ error }}</div>
+                <div class="d-flex align-center" v-if="error">
+                  <span class="error-msg">
+                    {{ error }}
+                  </span>
+                  <a class="ml-1 mt-2 fz-14" href="https://t.me/chootcvn" target="_blank" v-if="error.includes('tối đa')">@chootcvn</a>
+                </div>
               </div>
               <v-btn color="primary" @click="orderHandle" :disabled="loading" width="120px">
                 <v-progress-circular indeterminate v-if="loading" :width="3" :size="20"></v-progress-circular>
@@ -346,7 +351,7 @@ export default {
       }
 
       if (this.money > 50000000) {
-        this.error = 'Hạn mức giao dịch tối đa là 50 triệu'
+        this.error = 'Hạn mức giao dịch tối đa là 50 triệu. Mua số lượng lớn tại'
         return
       }
 
@@ -356,7 +361,7 @@ export default {
       }
 
       if (!this.bank.account || !this.bank.owner) {
-        this.error = "Vui lòng Đủ thông tin"
+        this.error = "Vui lòng nhập đủ thông tin"
         return
       }
       this.loading = true
@@ -365,7 +370,7 @@ export default {
         phone: this.account.phone,
         amount: this.amount,
         token: this.token,
-        fee: Math.round(this.transfer_fee * this.usdt_price),
+        fee: this.transfer_fee,
         network: this.network.value,
         bank_name: this.bank.info.short_name,
         account_number: this.bank.account,
