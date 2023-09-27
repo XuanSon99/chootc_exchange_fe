@@ -10,6 +10,9 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import './assets/css/style.css'
 import './assets/css/responsive.css'
+import Textra from 'vue-textra'
+ 
+Vue.use(Textra);
 
 Vue.config.productionTip = false
 Vue.config.silent = true
