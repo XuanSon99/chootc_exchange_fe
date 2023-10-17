@@ -27,7 +27,8 @@
                           </v-icon>
                         </template>
                         <div class="tooltip my-1">
-                          Hạn mức giao dịch mua mặc định là 1 - 50 triệu.
+                          Hạn mức mua mặc định là 500 nghìn - 2.5 triệu. <br> Đăng nhập và KYC để tăng hạn mức lên 50
+                          triệu!
                         </div>
                       </v-tooltip>
                     </div>
@@ -96,10 +97,10 @@
                   </span>
                   <v-btn class="fz-14 ml-2 mt-2" color="primary" :to="'/profile'" v-if="error.includes('KYC')" small
                     outlined>KYC ngay</v-btn>
-                  <v-btn class="fz-14 ml-2 mt-2" color="primary" to="/login" v-if="error.includes('đăng nhập')" small
+                  <v-btn class="fz-14 ml-2 mt-2" color="primary" to="/login" v-if="error.includes('Đăng nhập')" small
                     outlined>Đăng nhập</v-btn>
                   <a class="ml-1 mt-2 fz-14" href="https://t.me/chootcvn" target="_blank"
-                    v-if="error.includes('tối đa')">@chootcvn</a>
+                    v-if="error.includes('số lượng lớn')">@chootcvn</a>
                 </div>
               </div>
               <v-btn color="primary" @click="orderHandle" :disabled="loading" width="120px">
@@ -324,17 +325,19 @@ export default {
   },
   methods: {
     orderHandle() {
-      if (!this.account) {
-        this.error = 'Vui lòng đăng nhập trước khi thực hiện giao dịch mua'
-        return
-      }
-      if (this.account.verify != 'success') {
-        this.error = 'Vui lòng KYC để thực hiện giao dịch mua'
-        return
+      if (this.money > 2500000) {
+        if (!this.account) {
+          this.error = 'Hạn mức tối đa là 2.5 triệu. Đăng nhập để tăng hạn mức'
+          return
+        }
+        if (this.account.verify != 'success') {
+          this.error = 'Hạn mức tối đa là 2.5 triệu. KYC ngay để tăng hạn mức'
+          return
+        }
       }
 
-      if (this.money < 1000000) {
-        this.error = 'Hạn mức giao dịch tối thiểu là 1 triệu'
+      if (this.money < 500000) {
+        this.error = 'Hạn mức giao dịch tối thiểu là 500 nghìn'
         return
       }
 
@@ -349,7 +352,7 @@ export default {
       }
 
       if (!this.address) {
-        this.error = "Vui lòng nhập địa chỉ ví"
+        this.error = "Vui lòng nhập địa chỉ ví của bạn"
         return
       }
 

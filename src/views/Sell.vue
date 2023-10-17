@@ -27,7 +27,7 @@
                           </v-icon>
                         </template>
                         <div class="tooltip my-1">
-                          Hạn mức giao dịch mua mặc định là 1 - 50 triệu.
+                          Hạn mức bán mặc định là 500 nghìn - 50 triệu.
                         </div>
                       </v-tooltip>
                     </div>
@@ -108,7 +108,7 @@
                   <span class="error-msg">
                     {{ error }}
                   </span>
-                  <a class="ml-1 mt-2 fz-14" href="https://t.me/chootcvn" target="_blank" v-if="error.includes('tối đa')">@chootcvn</a>
+                  <a class="ml-1 mt-2 fz-14" href="https://t.me/chootcvn" target="_blank" v-if="error.includes('số lượng lớn')">@chootcvn</a>
                 </div>
               </div>
               <v-btn color="primary" @click="orderHandle" :disabled="loading" width="120px">
@@ -345,18 +345,18 @@ export default {
   },
   methods: {
     orderHandle() {
-      if (this.money < 1000000) {
-        this.error = 'Hạn mức giao dịch tối thiểu là 1 triệu'
+      if (this.money < 500000) {
+        this.error = 'Hạn mức giao dịch tối thiểu là 500 nghìn'
         return
       }
 
       if (this.money > 50000000) {
-        this.error = 'Hạn mức giao dịch tối đa là 50 triệu. Mua số lượng lớn tại'
+        this.error = 'Hạn mức giao dịch tối đa là 50 triệu. Bán số lượng lớn tại'
         return
       }
 
       if (!this.amount) {
-        this.error = "Vui lòng nhập số lượng cần mua"
+        this.error = "Vui lòng nhập số lượng cần bán"
         return
       }
 
