@@ -245,7 +245,7 @@ export default {
     this.addMessage();
     setInterval(() => {
       this.addMessage();
-    }, 9000);
+    }, 8000);
   },
   methods: {
     changePassword() {
@@ -335,7 +335,7 @@ export default {
         "***" +
         this.random(100, 999);
 
-      let money = this.formatMoney(this.random(0.5, 20) * 100)
+      let money = this.formatMoney(this.random(1, 20) * 100)
 
       let text = `Người dùng ${phone} vừa mua thành công ${money} USDT`
       if (type == 1) {

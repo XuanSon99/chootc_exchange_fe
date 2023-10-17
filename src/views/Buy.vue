@@ -167,7 +167,7 @@
                     </div>
                   </v-col>
                   <v-col cols="12" md="4">
-                    <img :src="qrcode" class="img-qr" alt="">
+                    <img :src="qrcode" class="img-qr" alt="" v-if="order_data">
                   </v-col>
                 </v-row>
               </div>
@@ -299,7 +299,7 @@ export default {
   computed: {
     ...mapGetters(["account"]),
     qrcode() {
-      return `https://img.vietqr.io/image/${this.bank[0]}-${this.bank[2]}-compact2.jpg?amount=${this.money}&addInfo=${this.order_data.code}&accountName=${this.bank[1]}`
+      return `https://img.vietqr.io/image/${this.bank[0]}-${this.bank[2]}-compact2.jpg?amount=${this.order_data.money}&addInfo=${this.order_data.code}&accountName=${this.bank[1]}`
     },
     money_pay() {
       if (this.$vuetify.breakpoint.width < 1025) {
