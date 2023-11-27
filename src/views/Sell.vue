@@ -1,6 +1,17 @@
 <template>
-  <main>
-    <v-container>
+  <main class="mb-pt-0">
+    <div class="mheader" v-if="mobile">
+      <v-btn icon @click="$router.back()" v-if="step == 1">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
+      <v-btn icon @click="step -= 1" v-else>
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
+      <span v-if="step == 1">BÁN {{ token.toUpperCase() }}</span>
+      <span v-if="step == 2">THANH TOÁN</span>
+      <span v-if="step == 3">NHẬP TXHASH/ ID</span>
+    </div>
+    <v-container v-if="!mobile">
       <v-row>
         <v-col cols="12" md="8">
           <div class="ml-6">
@@ -108,7 +119,8 @@
                   <span class="error-msg">
                     {{ error }}
                   </span>
-                  <a class="ml-1 mt-2 fz-14" href="https://t.me/chootcvn" target="_blank" v-if="error.includes('số lượng lớn')">@chootcvn</a>
+                  <a class="ml-1 mt-2 fz-14" href="https://t.me/chootcvn" target="_blank"
+                    v-if="error.includes('số lượng lớn')">@chootcvn</a>
                 </div>
               </div>
               <v-btn color="primary" @click="orderHandle" :disabled="loading" width="120px">
@@ -262,6 +274,177 @@
         </v-col>
       </v-row>
     </v-container>
+    <v-container v-else class="pt-80">
+      <div v-if="step == 1">
+        <v-row>
+          <v-col cols="12" md="5">
+            <div class="d-flex align-center">
+              <label>Số lượng cần bán</label>
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon class="ml-1 mb-1" size="16" v-bind="attrs" v-on="on">
+                    mdi-help-circle-outline
+                  </v-icon>
+                </template>
+                <div class="tooltip my-1">
+                  Hạn mức bán mặc định là 500 nghìn - 50 triệu.
+                </div>
+              </v-tooltip>
+            </div>
+            <div class="input-box">
+              <input type="number" class="exchange-input-mobile" v-model="amount" @input="inputAmount" />
+              <div class="unit">
+                <v-select dense solo :items="token_list" v-model="token" :menu-props="{ offsetY: true }">
+                  <template slot="selection" slot-scope="data">
+                    <img :src="'/img/p2p/' + data.item + '.svg'" alt="" />
+                    {{ data.item.toUpperCase() }}
+                  </template>
+                  <template slot="item" slot-scope="data">
+                    <img :src="'/img/p2p/' + data.item + '.svg'" alt="" />
+                    {{ data.item.toUpperCase() }}
+                  </template>
+                </v-select>
+              </div>
+            </div>
+            <div class="estimated">
+              Ước tính:
+              <span>1 {{ token }} ≈ {{ formatMoney(price) }} VND</span>
+            </div>
+          </v-col>
+          <v-col cols="12" md="7">
+            <div class="d-flex align-center">
+              <label>Số tiền nhận được</label>
+              <v-tooltip top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon class="ml-1 mb-1" size="16" v-bind="attrs" v-on="on">
+                    mdi-help-circle-outline
+                  </v-icon>
+                </template>
+                <div class="tooltip my-1">
+                  Số tiền cần thanh toán có thể bị thay đổi <br> do tỷ giá được cập nhật liên tục
+                </div>
+              </v-tooltip>
+            </div>
+            <v-text-field filled rounded :value="money_pay" disabled class="money">
+              <template v-slot:append>
+                <img width="20" height="20" src="/img/p2p/vnd.png" alt="">
+              </template>
+            </v-text-field>
+            <div class="estimated">
+              Phí:
+              <span>{{ transfer_fee }} USDT ≈ {{ formatMoney(transfer_fee * usdt_price) }} VND</span>
+              (Bao gồm cả phí blockchain)
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="5">
+            <label>Mạng lưới</label>
+            <v-select :items="network_list" filled rounded :item-text="item => item.name" :menu-props="{ offsetY: true }"
+              return-object v-model="network">
+            </v-select>
+          </v-col>
+          <v-col cols="12" md="7">
+            <label>Ngân hàng nhận</label>
+            <v-autocomplete :items="bank_list" filled rounded return-object
+              :item-text="item => item.code + ' - ' + item.short_name + ' - ' + item.name" v-model="bank.info"
+              placeholder="Chọn ngân hàng của bạn">
+            </v-autocomplete>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="5">
+            <label>Số tài khoản nhận</label>
+            <v-text-field v-model="bank.account" type="number" filled rounded placeholder="Nhập số tài khoản nhận">
+            </v-text-field>
+          </v-col>
+          <v-col cols="12" md="7">
+            <label>Tên chủ tài khoản</label>
+            <v-text-field v-model="bank.owner" filled rounded @focus="getBankInfo" placeholder="Tên chủ tài khoản">
+            </v-text-field>
+          </v-col>
+        </v-row>
+        <div class="mt-2" v-if="error">
+          <span class="error-msg">
+            {{ error }}
+          </span>
+          <a class="ml-1 mt-2 fz-14" href="https://t.me/chootcvn" target="_blank"
+            v-if="error.includes('số lượng lớn')">@chootcvn</a>
+        </div>
+        <v-btn color="primary" @click="orderHandle" :disabled="loading" class="mt-6 elevation-0" rounded block x-large>
+          <v-progress-circular indeterminate v-if="loading" :width="3" :size="20"></v-progress-circular>
+          <span v-else>Xác nhận</span>
+        </v-btn>
+      </div>
+      <div v-if="step == 2">
+        <v-row>
+          <v-col cols="12" md="8">
+            <v-simple-table dense>
+              <tbody>
+                <tr>
+                  <td style="min-width: 130px;">Mã giao dịch:</td>
+                  <td>{{ order_data.code }}</td>
+                </tr>
+                <tr>
+                  <td>Số lượng bán:</td>
+                  <td>{{ amount }} {{ token.toUpperCase() }}</td>
+                </tr>
+                <tr>
+                  <td>Tỷ giá:</td>
+                  <td>{{ formatMoney(order_data.rate) }} VNĐ</td>
+                </tr>
+                <tr>
+                  <td>Số tiền nhận:</td>
+                  <td>{{ formatMoney(order_data.money) }} VNĐ</td>
+                </tr>
+                <tr>
+                  <td>Tài khoản nhận:</td>
+                  <td>
+                    {{ bank.account }} - {{ bank.owner }}
+                    <br>
+                    {{ bank.info.name }} ({{ bank.info.code }})
+                  </td>
+                </tr>
+                <tr>
+                  <td>Ví thanh toán:</td>
+                  <td>
+                    {{ wallet_address }}
+                    <v-btn icon>
+                      <v-icon size="20" @click="copyText(wallet_address)">mdi-content-copy</v-icon>
+                    </v-btn>
+                  </td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+
+          </v-col>
+          <v-col cols="12" md="4">
+            <div class="text-center">
+              <vue-qr class="img-qr" :text="wallet_address" size="235"></vue-qr>
+            </div>
+          </v-col>
+          <v-col cols="12">
+            <div class="note">
+              * Vui lòng chuyển {{ formatMoney(amount) }} {{ token.toUpperCase() }} giao thức {{ network.name }}
+              vào địa chỉ ví hoặc mã QR bên trên.
+            </div>
+          </v-col>
+        </v-row>
+        <v-btn color="primary" @click="step = 3" class="mt-6 elevation-0" rounded block x-large>
+          Tôi đã thanh toán
+        </v-btn>
+      </div>
+      <div v-if="step == 3">
+        <div>
+          <label>Txhash/ ID giao dịch:</label>
+          <v-text-field v-model="customer_address" filled rounded placeholder="Nhập Txhash hoặc ID giao dịch">
+          </v-text-field>
+        </div>
+        <v-btn color="primary" @click="completeHandle" rounded block x-large class="mt-6 elevation-0">
+          Hoàn thành
+        </v-btn>
+      </div>
+    </v-container>
   </main>
 </template>
 
@@ -338,6 +521,9 @@ export default {
       }
       return 10
     },
+    mobile() {
+      return this.$vuetify.breakpoint.width < 1025
+    }
   },
   mounted() {
     this.getPrice()
@@ -392,14 +578,6 @@ export default {
         this.$toast.error('Vui lòng nhập Txhash/ ID giao dịch')
         return
       }
-      // if (this.network.value == 'trc20' && !this.validateTrc(this.customer_address)) {
-      //   this.$toast.error('Địa chỉ ví không chính xác')
-      //   return
-      // }
-      // if (this.network.value != 'trc20' && !this.validateErc(this.customer_address)) {
-      //   this.$toast.error('Địa chỉ ví không chính xác')
-      //   return
-      // }
 
       if (this.network.value == 'trc20' && this.customer_address.length != 64) {
         this.$toast.error('Txhash/ ID giao dịch không chính xác')
@@ -418,6 +596,10 @@ export default {
         },
         (res) => {
           this.is_waiting = true
+          if (this.mobile) {
+            this.$toast.success("Giao dịch đang được xử lý. Vui lòng chờ trong giây lát!")
+            this.step = 1
+          }
         })
     },
     getPrice() {
@@ -426,9 +608,9 @@ export default {
       this.loading = true
       const params = `p2p?type=sell&asset=${this.$route.params.id}&fiat=vnd`;
       this.CallAPI("get", params, {}, (res) => {
-        this.price = Number(res.data.data[4].adv.price);
+        this.price = Number(res.data.data[7].adv.price);
         if (this.token == "usdt") {
-          this.usdt_price = Number(res.data.data[4].adv.price);
+          this.usdt_price = Number(res.data.data[7].adv.price);
         }
         this.loading = false
         this.inputAmount();

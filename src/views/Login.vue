@@ -1,21 +1,23 @@
 <template>
-    <main>
+    <main class="mb-pt-0">
         <v-container>
             <v-row>
                 <v-col cols="12" md="8">
-                    <div class="system mx-6">
+                    <div class="system">
                         <h1>Đăng nhập</h1>
                         <v-form v-model="valid" ref="form" lazy-validation>
                             <label>Số điện thoại</label>
                             <v-text-field v-model="phone" type="number" prepend-inner-icon="mdi-account-outline"
                                 :rules="[rules.required, rules.phone, rules.not_exists]" @input="rules.not_exists = true"
-                                outlined required placeholder="Nhập số điện thoại"></v-text-field>
+                                filled rounded required placeholder="Nhập số điện thoại"></v-text-field>
                             <label>Mật khẩu</label>
                             <v-text-field v-model="password" :type="show_pass ? 'text' : 'password'"
                                 :rules="[rules.required, rules.password, rules.invalid]" @input="rules.invalid = true"
                                 prepend-inner-icon="mdi-lock" :append-icon="show_pass ? 'mdi-eye' : 'mdi-eye-off'"
-                                @click:append="show_pass = !show_pass" outlined placeholder="Nhập mật khẩu"></v-text-field>
-                            <v-btn color="primary" block x-large @click="loginHandle" :disabled="!valid">Đăng nhập</v-btn>
+                                @click:append="show_pass = !show_pass" filled rounded
+                                placeholder="Nhập mật khẩu"></v-text-field>
+                            <v-btn color="primary" class="elevation-0" block x-large rounded @click="loginHandle"
+                                :disabled="!valid">Đăng nhập</v-btn>
                             <div class="mt-3 create-account">
                                 Chưa có tài khoản?
                                 <span @click="$router.push('register')">Đăng ký ngay</span>
@@ -106,7 +108,11 @@ export default {
             }
             this.CallAPI("post", "auth/login", data, (res) => {
                 localStorage.setItem("access_token", res.data.access_token);
-                this.$router.push("/");
+                if (this.mobile) {
+                    this.$router.push("/home");
+                } else {
+                    this.$router.push("/");
+                }
                 this.getProfile()
             }, (err) => {
                 if (err.response.status == 400) {

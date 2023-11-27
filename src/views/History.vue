@@ -9,12 +9,12 @@
         <v-tabs-items v-model="tab">
           <v-tab-item>
             <v-card-title>
-              Lịch sử giao dịch
-              <v-spacer></v-spacer>
+              <span v-if="!mobile">Lịch sử giao dịch</span>
+              <v-spacer v-if="!mobile"></v-spacer>
               <v-text-field v-model="buy_search" append-icon="mdi-magnify" label="Tìm kiếm" single-line
                 hide-details></v-text-field>
             </v-card-title>
-            <v-data-table :headers="headers" :items="buy_order">
+            <v-data-table :headers="headers" :items="buy_order" :search="buy_search">
               <template v-slot:[`item.created_at`]="{ item }">
                 {{ formatDate(item.created_at) }}
               </template>
@@ -39,12 +39,12 @@
           </v-tab-item>
           <v-tab-item>
             <v-card-title>
-              Lịch sử giao dịch
-              <v-spacer></v-spacer>
+              <span v-if="!mobile">Lịch sử giao dịch</span>
+              <v-spacer v-if="!mobile"></v-spacer>
               <v-text-field v-model="sell_search" append-icon="mdi-magnify" label="Tìm kiếm" single-line
                 hide-details></v-text-field>
             </v-card-title>
-            <v-data-table :headers="headers" :items="sell_order">
+            <v-data-table :headers="headers" :items="sell_order" :search="sell_search">
               <template v-slot:[`item.created_at`]="{ item }">
                 {{ formatDate(item.created_at) }}
               </template>
@@ -89,7 +89,7 @@
               </tr>
               <tr>
                 <td style="width: 150px;">Số lượng:</td>
-                <td class="upper-case">{{ formatMoney(detail_order.amount) }} {{ detail_order.token }} ({{
+                <td class="upper-case">{{ detail_order.amount }} {{ detail_order.token }} ({{
                   detail_order.network
                 }})</td>
               </tr>
@@ -190,6 +190,11 @@ export default {
       sell_order: [],
       state_list: '',
       detail_order: '',
+    }
+  },
+  computed: {
+    mobile() {
+      return this.$vuetify.breakpoint.width < 1025
     }
   },
   mounted() {

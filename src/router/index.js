@@ -7,27 +7,30 @@ Vue.use(Meta);
 
 const routes = [
   {
-    name: "Home",
+    name: "Giao dịch",
     path: "*",
     component: () => import("../views/Buy.vue"),
     meta: {
       header: true,
+      hide: true
     },
   },
   {
-    name: "Buy",
+    name: "Giao dịch",
     path: "/buy/:id",
     component: () => import("../views/Buy.vue"),
     meta: {
       header: true,
+      hide: true
     },
   },
   {
-    name: "Sell",
+    name: "Giao dịch",
     path: "/sell/:id",
     component: () => import("../views/Sell.vue"),
     meta: {
       header: true,
+      hide: true
     },
   },
   {
@@ -36,6 +39,7 @@ const routes = [
     component: () => import("../views/Login.vue"),
     meta: {
       header: true,
+      hide: true
     },
     beforeEnter: (to, from, next) => {
       if (localStorage.getItem("access_token")) next({ name: "Home" });
@@ -43,7 +47,7 @@ const routes = [
     },
   },
   {
-    name: "History",
+    name: "Lịch sử giao dịch",
     path: "/history/:id",
     component: () => import("../views/History.vue"),
     meta: {
@@ -51,19 +55,38 @@ const routes = [
     },
   },
   {
-    name: "Referral",
-    path: "/referral",
-    component: () => import("../views/RefOrder.vue"),
+    name: "Trang chủ",
+    path: "/home",
+    component: () => import("../views/Home.vue"),
+    meta: {
+      header: true,
+      hide: true
+    },
+  },
+  {
+    name: "Thông báo",
+    path: "/notification",
+    component: () => import("../views/Notification.vue"),
     meta: {
       header: true,
     },
   },
   {
-    name: "Profile",
+    name: "Chương trình giới thiệu",
+    path: "/referral",
+    component: () => import("../views/RefOrder.vue"),
+    meta: {
+      header: true,
+      back: true
+    },
+  },
+  {
+    name: "Thông tin cá nhân",
     path: "/profile",
     component: () => import("../views/Profile.vue"),
     meta: {
       header: true,
+      back: true
     },
   },
   {
@@ -71,7 +94,8 @@ const routes = [
     path: "/kyc/:id",
     component: () => import("../views/Kyc.vue"),
     meta: {
-      header: false,
+      header: true,
+      hide: true
     },
   },
   {
@@ -88,10 +112,20 @@ const routes = [
     component: () => import("../views/Register.vue"),
     meta: {
       header: true,
+      hide: true
     },
     beforeEnter: (to, from, next) => {
       if (localStorage.getItem("access_token")) next({ name: "Home" });
       next();
+    },
+  },
+  {
+    name: "Account",
+    path: "/account",
+    component: () => import("../views/Account.vue"),
+    meta: {
+      header: true,
+      hide: true
     },
   },
 ];
@@ -110,6 +144,7 @@ router.beforeEach((to, from, next) => {
   if (to.name == 'Error' && !localStorage.getItem("access_token")) next({ name: 'Login' })
   if (to.name == 'Profile' && !localStorage.getItem("access_token")) next({ name: 'Login' })
   if (to.name == 'Referral' && !localStorage.getItem("access_token")) next({ name: 'Login' })
+  if (to.name == 'Account' && !localStorage.getItem("access_token")) next({ name: 'Login' })
   next()
 })
 

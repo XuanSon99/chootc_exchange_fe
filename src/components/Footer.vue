@@ -1,5 +1,5 @@
 <template>
-  <footer>
+  <footer v-if="!mobile">
     <v-container>
       <v-divider class="mb-3"></v-divider>
       <v-row align="center">
@@ -7,9 +7,11 @@
           © 2023 chootc.com. All rights reserved
         </v-col>
         <v-col cols="12" md="4">
-          <div class="d-flex justify-center"> 
-            <a href="https://chootc.gitbook.io/exchange/huong-dan-giao-dich/mua-tien-dien-tu" target="_blank" class="px-5">Hướng dẫn</a>
-            <a href="https://chootc.gitbook.io/exchange/dieu-khoan-su-dung" target="_blank" class="px-5">Điều khoản sử dụng</a>
+          <div class="d-flex justify-center">
+            <a href="https://chootc.gitbook.io/exchange/huong-dan-giao-dich/mua-tien-dien-tu" target="_blank"
+              class="px-5">Hướng dẫn</a>
+            <a href="https://chootc.gitbook.io/exchange/dieu-khoan-su-dung" target="_blank" class="px-5">Điều khoản sử
+              dụng</a>
           </div>
         </v-col>
         <v-col cols="12" md="4">
@@ -42,6 +44,10 @@
 
 <script>
 export default {
-
+  computed: {
+    mobile() {
+      return this.$vuetify.breakpoint.width < 1025
+    }
+  },
 };
 </script>

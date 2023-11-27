@@ -1,31 +1,31 @@
 <template>
-    <main>
+    <main class="mb-pt-0">
         <v-container>
             <v-row>
                 <v-col cols="12" md="8">
-                    <div class="system mx-6">
+                    <div class="system">
                         <h1>Tạo tài khoản</h1>
                         <v-form v-model="valid" ref="form" lazy-validation>
                             <label>Số điện thoại</label>
                             <v-text-field v-model="phone" type="number" prepend-inner-icon="mdi-account-outline"
-                                :rules="[rules.required, rules.phone, rules.exist]" @input="rules.exist = true" outlined
+                                :rules="[rules.required, rules.phone, rules.exist]" @input="rules.exist = true" filled rounded
                                  placeholder="Nhập số điện thoại"></v-text-field>
                             <label>Mật khẩu</label>
                             <v-text-field v-model="password" :type="show_pass ? 'text' : 'password'"
                                 :rules="[rules.required, rules.password]" prepend-inner-icon="mdi-lock"
                                 :append-icon="show_pass ? 'mdi-eye' : 'mdi-eye-off'" @click:append="show_pass = !show_pass"
-                                outlined placeholder="Nhập mật khẩu"></v-text-field>
+                                filled rounded placeholder="Nhập mật khẩu"></v-text-field>
                             <label>Xác nhận mật khẩu</label>
                             <v-text-field v-model="re_password" :type="show_re_pass ? 'text' : 'password'"
                                 :rules="[rules.required, rules.password, rules.re_password]" prepend-inner-icon="mdi-lock-check"
                                 :append-icon="show_re_pass ? 'mdi-eye' : 'mdi-eye-off'"
-                                @click:append="show_re_pass = !show_re_pass" outlined
+                                @click:append="show_re_pass = !show_re_pass" filled rounded
                                 placeholder="Nhập lại mật khẩu"></v-text-field>
                             <label>Người giới thiệu</label>
                             <v-text-field v-model="referral" type="number" prepend-inner-icon="mdi-account"
-                                :rules="[rules.referral]" @input="rules.referral = true" outlined
+                                :rules="[rules.referral]" @input="rules.referral = true" filled rounded
                                 placeholder="Nhập SĐT giới thiệu nếu có" :disabled="$route.query.ref"></v-text-field>
-                            <v-btn color="primary" block x-large @click="loginHandle" :disabled="!valid">Đăng ký</v-btn>
+                            <v-btn color="primary" class="elevation-0" block x-large @click="loginHandle" :disabled="!valid">Đăng ký</v-btn>
                             <div class="mt-3 create-account">
                                 Bạn đã có tài khoản?
                                 <span @click="$router.push('login')">Đăng nhập ngay</span>

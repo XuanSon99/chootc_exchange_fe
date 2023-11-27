@@ -1,7 +1,7 @@
 <template>
-  <main class="profile">
+  <main class="profile mhead">
     <v-container>
-      <div class="d-flex mb-6 mx-6">
+      <div class="d-flex mb-6">
         <v-avatar color="primary" size="80">
           <v-icon dark size="50">
             mdi-account-circle
@@ -25,38 +25,42 @@
       </div>
       <v-row>
         <v-col cols="12" md="8">
-          <div class="mx-6">
+          <div>
             <v-row>
               <v-col cols="12">
                 <label>Link giới thiệu</label>
-                <v-text-field :value="ref_link" outlined readonly append-icon="mdi-content-copy"
+                <v-text-field :value="ref_link" filled rounded readonly append-icon="mdi-content-copy"
                   @click:append="copyText(ref_link)"></v-text-field>
               </v-col>
               <v-col cols="12" md="5">
                 <label>Họ và tên</label>
-                <v-text-field v-model="name" outlined placeholder="Họ và tên">
+                <v-text-field v-model="name" filled rounded placeholder="Họ và tên">
                 </v-text-field>
               </v-col>
               <v-col cols="12" md="7">
                 <label>Ngày sinh</label>
-                <v-text-field v-model="birthday" outlined :placeholder="gender_placeholder">
+                <v-text-field v-model="birthday" filled rounded :placeholder="gender_placeholder">
                 </v-text-field>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="12" md="5">
                 <label>Giới tính</label>
-                <v-select v-model="gender" :items="['Nam', 'Nữ', 'Khác']" outlined placeholder="Giới tính">
+                <v-select v-model="gender" :items="['Nam', 'Nữ', 'Khác']" filled rounded placeholder="Giới tính">
                 </v-select>
               </v-col>
               <v-col cols="12" md="7">
                 <label>Địa chỉ</label>
-                <v-text-field v-model="address" outlined placeholder="Địa chỉ">
+                <v-text-field v-model="address" filled rounded placeholder="Địa chỉ">
                 </v-text-field>
               </v-col>
             </v-row>
-            <v-btn class="my-6" color="primary" x-large block @click="updateProfile">Cập nhật</v-btn>
-            <v-card class="pa-6" outlined v-if="!account.verify">
+            <v-row>
+              <v-col cols="12">
+                <v-btn class="elevation-0" color="primary" x-large block rounded @click="updateProfile">Cập nhật</v-btn>
+              </v-col>
+            </v-row>
+            <v-card class="pa-6" outlined v-if="!account.verify && !mobile">
               <div class="d-flex align-start">
                 <v-icon color="orange">mdi-alert-outline</v-icon>
                 <div class="warning-msg ml-3">
@@ -66,7 +70,8 @@
               </div>
               <v-text-field class="mt-3" :value="kyc_link" outlined readonly append-icon="mdi-content-copy"
                 @click:append="copyText(kyc_link)" @click="copyText(kyc_link)" v-if="!mobile"></v-text-field>
-              <v-btn :to="'/kyc/' + account.phone" color="primary" class="mt-3" block outlined v-else>Xác minh danh tính</v-btn>
+              <v-btn :to="'/kyc/' + account.phone" color="primary" class="mt-3" block outlined v-else>Xác minh danh
+                tính</v-btn>
             </v-card>
             <v-card class="pa-6" outlined v-if="account.verify == 'pending'">
               <div class="d-flex align-start">
@@ -79,7 +84,7 @@
             </v-card>
           </div>
         </v-col>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="4" v-if="!mobile">
           <div class="faq">
             <h3 class="mb-3">Câu hỏi thường gặp</h3>
             <v-expansion-panels>
@@ -111,11 +116,11 @@ export default {
       faq: [
         {
           answer: 'Xác minh danh tính (KYC) để làm gì?',
-          question: 'Đối với giao dịch mua, bạn cần KYC để chúng tôi xác minh ngân hàng bạn sử dụng là ngân hàng chính chủ. Còn đối với giao dịch bán thì bạn không cần phải KYC.'
+          question: 'Đối với giao dịch mua trên 2,5 triệu bạn cần KYC để chúng tôi xác minh ngân hàng bạn sử dụng là ngân hàng chính chủ. Còn đối với giao dịch bán thì bạn không cần phải KYC.'
         },
         {
           answer: 'Thời gian xác minh KYC?',
-          question: 'Quá trình xác minh sẽ diễn ra trong khoảng 5-10 phút.'
+          question: 'Quá trình xác minh sẽ diễn ra trong khoảng 5-10 phút. Liên hệ Supporter để được duyệt nhanh hơn.'
         },
         {
           answer: 'Tôi có thể liên hệ ai để được hỗ trợ?',

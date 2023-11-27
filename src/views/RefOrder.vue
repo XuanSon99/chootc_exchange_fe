@@ -1,6 +1,6 @@
 <template>
-    <main>
-        <v-container>
+    <main class="mhead">
+        <v-container v-if="!mobile">
             <v-card>
                 <v-card-title>
                     <v-icon class="mr-2" color="primary" large>mdi-account-circle-outline</v-icon>
@@ -65,6 +65,54 @@
                 </div>
             </v-card>
         </v-container>
+        <v-container v-else>
+            <v-row>
+                <v-col cols="12">
+                    <label>Mã giới thiệu</label>
+                    <v-text-field :value="account.phone" filled rounded readonly append-icon="mdi-content-copy"
+                        @click:append="copyText(account.phone)"></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                    <label>Link giới thiệu</label>
+                    <v-text-field :value="ref_link" filled rounded readonly append-icon="mdi-content-copy"
+                        @click:append="copyText(ref_link)"></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                    <v-btn class="primary elevation-0" x-large rounded block @click="shareSocial">
+                        Chia sẻ
+                    </v-btn>
+                </v-col>
+            </v-row>
+            <v-card v-if="data[0]">
+                <v-card-title>
+                    <v-icon class="mr-2" color="primary" large>mdi-account-circle-outline</v-icon>
+                    Giao dịch bạn bè
+                </v-card-title>
+                <v-data-table :headers="headers" :items="data" :items-per-page="10" :page.sync="page"
+                    :server-items-length="totalItems" :footer-props="{ 'items-per-page-options': [10, 10] }">
+                    <template v-slot:[`item.created_at`]="{ item }">
+                        {{ formatDate(item.created_at) }}
+                    </template>
+                    <template v-slot:[`item.money`]="{ item }">
+                        {{ formatMoney(item.money) }} VND
+                    </template>
+                    <template v-slot:[`item.amount`]="{ item }">
+                        <div class="uppercase">
+                            {{ item.amount }} {{ item.token }}
+                        </div>
+                    </template>
+                    <template v-slot:[`item.type`]="{ item }">
+                        <span v-if="item.txhash" class="main-color">Đơn mua</span>
+                        <span v-else class="error-color">Đơn bán</span>
+                    </template>
+                    <template v-slot:[`item.status`]="{ item }">
+                        <span v-if="stateDetail(item.status)" :style="{ color: `${stateDetail(item.status).color}` }">
+                            {{ stateDetail(item.status).status }}
+                        </span>
+                    </template>
+                </v-data-table>
+            </v-card>
+        </v-container>
     </main>
 </template>
   
@@ -107,6 +155,9 @@ export default {
         ref_link() {
             return `https://exchange.chootc.com/register?ref=${this.account.phone}`
         },
+        mobile() {
+            return this.$vuetify.breakpoint.width < 1025
+        }
     },
     mounted() {
         this.CallAPI("get", "states", {}, (res) => {
@@ -271,6 +322,23 @@ export default {
             this.$toast.success('Copy thành công')
             navigator.clipboard.writeText(value);
         },
+        async shareSocial() {
+            const blob = await fetch('https://cdn.glitch.com/f96f78ec-d35d-447b-acf4-86f2b3658491%2Fchuck.png?v=1618311092497').then(r => r.blob())
+            const data = {
+                files: [
+                    new File([blob], 'image.png', {
+                        type: blob.type,
+                    }),
+                ],
+                title: "title",
+                text: "text",
+            };
+            try {
+                await navigator.share(data);
+            } catch (err) {
+                console.error(err.name, err.message);
+            }
+        }
     },
     watch: {
         page() {

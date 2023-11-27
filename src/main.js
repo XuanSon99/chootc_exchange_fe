@@ -30,7 +30,7 @@ Vue.use(Toast, {
 
 Vue.prototype.image = function (url) {
   return process.env.VUE_APP_BASE_URL + "/storage/" + url;
-},
+}
 
 Vue.prototype.CallAPI = function (method, url, data, callResponse, callError) {
   const config = {
