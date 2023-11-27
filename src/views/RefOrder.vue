@@ -77,13 +77,14 @@
                     <v-text-field :value="ref_link" filled rounded readonly append-icon="mdi-content-copy"
                         @click:append="copyText(ref_link)"></v-text-field>
                 </v-col>
+                <vue-qr :text="ref_link" :callback="getQr" style="display: none;" v-if="ref_link"></vue-qr>
                 <v-col cols="12">
                     <v-btn class="primary elevation-0" x-large rounded block @click="shareSocial">
                         Chia sẻ
                     </v-btn>
                 </v-col>
             </v-row>
-            <v-card v-if="data[0]">
+            <v-card v-if="data[0]" class="mt-8">
                 <v-card-title>
                     <v-icon class="mr-2" color="primary" large>mdi-account-circle-outline</v-icon>
                     Giao dịch bạn bè
@@ -118,7 +119,9 @@
   
 <script>
 import { mapGetters } from "vuex";
+import VueQr from 'vue-qr'
 export default {
+    components: { VueQr },
     data() {
         return {
             search: "",
@@ -129,7 +132,7 @@ export default {
                 { text: "Loại đơn", value: "type", sortable: false },
                 { text: "Số điện thoại", value: "phone", sortable: false },
                 { text: "Số lượng", value: "amount", sortable: false },
-                { text: "Số tiền", value: "money", sortable: false },
+                // { text: "Số tiền", value: "money", sortable: false },
                 { text: "Trạng thái", value: "status", sortable: false },
                 { text: "Thời gian", value: "created_at", sortable: false },
             ],
@@ -143,7 +146,8 @@ export default {
             filter: {
                 dates: []
             },
-            excel_htmls: ''
+            excel_htmls: '',
+            qr_url: ""
         };
     },
     computed: {
@@ -322,16 +326,19 @@ export default {
             this.$toast.success('Copy thành công')
             navigator.clipboard.writeText(value);
         },
+        getQr(url) {
+            this.qr_url = url
+        },
         async shareSocial() {
-            const blob = await fetch('https://cdn.glitch.com/f96f78ec-d35d-447b-acf4-86f2b3658491%2Fchuck.png?v=1618311092497').then(r => r.blob())
+            const blob = await fetch(this.qr_url).then(r => r.blob())
             const data = {
                 files: [
                     new File([blob], 'image.png', {
                         type: blob.type,
                     }),
                 ],
-                title: "title",
-                text: "text",
+                title: "Đăng ký tài khoản trang mua bán lẻ Exchange.chootc.com",
+                text: this.ref_link,
             };
             try {
                 await navigator.share(data);
