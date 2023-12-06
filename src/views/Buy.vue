@@ -439,11 +439,11 @@ export default {
       money: "",
       price: 0,
       network_list: [
-        {
-          name: "Tron (TRC20)",
-          value: "trc20",
-          fee: 1
-        },
+        // {
+        //   name: "Tron (TRC20)",
+        //   value: "trc20",
+        //   fee: 1
+        // },
         {
           name: "BNB Smartchain (BEP20)",
           value: "bep20",
@@ -456,8 +456,8 @@ export default {
         },
       ],
       network: {
-        name: "Tron (TRC20)",
-        value: "trc20",
+        name: "BNB Smartchain (BEP20)",
+        value: "bep20",
         fee: 1
       },
       usdt_price: 0,
@@ -470,8 +470,8 @@ export default {
       loading: false
     }
   },
-  created(){
-    if(this.mobile && !this.$route.params.id){
+  created() {
+    if (this.mobile && !this.$route.params.id) {
       this.$router.push('/home');
     }
   },
