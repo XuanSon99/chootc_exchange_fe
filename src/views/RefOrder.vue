@@ -333,7 +333,7 @@ export default {
             const blob = await fetch(this.qr_url).then(r => r.blob())
             const data = {
                 files: [
-                    new File([blob], 'image.png', {
+                    new File([blob], 'exchange-chootc.png', {
                         type: blob.type,
                     }),
                 ],

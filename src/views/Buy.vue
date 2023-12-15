@@ -439,11 +439,11 @@ export default {
       money: "",
       price: 0,
       network_list: [
-        // {
-        //   name: "Tron (TRC20)",
-        //   value: "trc20",
-        //   fee: 1
-        // },
+        {
+          name: "Tron (TRC20)",
+          value: "trc20",
+          fee: 3
+        },
         {
           name: "BNB Smartchain (BEP20)",
           value: "bep20",
@@ -452,7 +452,7 @@ export default {
         {
           name: "Ethereum (ERC20)",
           value: "erc20",
-          fee: 4.18
+          fee: 10
         },
       ],
       network: {
