@@ -513,13 +513,15 @@ export default {
       return `${this.amount} * ${this.formatMoney(this.price)} - ${this.formatMoney(this.transfer_fee * this.usdt_price)} = ${this.formatMoney(this.money)}`.replace("- 0 ", "")
     },
     transfer_fee() {
-      if (this.token == "usdt" || this.token == "busd") {
-        if (this.amount < 10000) {
-          return this.network.fee
-        }
-        return 0
+      let utc_hours = new Date().getUTCHours()
+      let surcharge = 0
+      if (utc_hours < 1 || utc_hours > 11) {
+        surcharge = 1
       }
-      return 10
+      if (this.token == "usdt" || this.token == "busd") {
+        return this.network.fee + surcharge
+      }
+      return 10 + surcharge
     },
     mobile() {
       return this.$vuetify.breakpoint.width < 1025
