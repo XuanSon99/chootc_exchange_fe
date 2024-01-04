@@ -478,24 +478,24 @@ export default {
         {
           name: "Tron (TRC20)",
           value: "trc20",
-          fee: 1
+          fee: 2
         },
         {
           name: "BNB Smartchain (BEP20)",
           value: "bep20",
-          fee: 1
+          fee: 2
         },
 
         {
           name: "Ethereum (ERC20)",
           value: "erc20",
-          fee: 1
+          fee: 2
         },
       ],
       network: {
         name: "BNB Smartchain (BEP20)",
         value: "bep20",
-        fee: 1
+        fee: 2
       },
       wallet_address: "",
       interval: '',
@@ -515,7 +515,7 @@ export default {
     transfer_fee() {
       let utc_hours = new Date().getUTCHours()
       let surcharge = 0
-      if (utc_hours < 1 || utc_hours > 11) {
+      if (utc_hours < 1 || utc_hours > 10) {
         surcharge = 1
       }
       if (this.token == "usdt" || this.token == "busd") {

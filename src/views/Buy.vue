@@ -447,7 +447,7 @@ export default {
         {
           name: "BNB Smartchain (BEP20)",
           value: "bep20",
-          fee: 1
+          fee: 2
         },
         {
           name: "Ethereum (ERC20)",
@@ -458,7 +458,7 @@ export default {
       network: {
         name: "BNB Smartchain (BEP20)",
         value: "bep20",
-        fee: 1
+        fee: 2
       },
       usdt_price: 0,
       address: '',
@@ -489,7 +489,7 @@ export default {
     transfer_fee() {
       let utc_hours = new Date().getUTCHours()
       let surcharge = 0
-      if (utc_hours < 1 || utc_hours > 11) {
+      if (utc_hours < 1 || utc_hours > 10) {
         surcharge = 1
       }
       if (this.token == "usdt" || this.token == "busd") {
