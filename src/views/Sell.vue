@@ -30,7 +30,7 @@
                 <v-row>
                   <v-col cols="12" md="5">
                     <div class="d-flex align-center">
-                      <label>Số lượng cần bán</label>
+                      <label>Số lượng (Không giới hạn)</label>
                       <v-tooltip top>
                         <template v-slot:activator="{ on, attrs }">
                           <v-icon class="ml-1 mb-1" size="16" v-bind="attrs" v-on="on">
@@ -38,7 +38,7 @@
                           </v-icon>
                         </template>
                         <div class="tooltip my-1">
-                          Hạn mức bán mặc định là 500 nghìn - 50 triệu.
+                          Không giới hạn số lượng trên mỗi giao dịch
                         </div>
                       </v-tooltip>
                     </div>
@@ -203,7 +203,7 @@
                     <v-icon size="20" class="mt-1 mr-2" color="primary">mdi-progress-check</v-icon>
                     <div>
                       Giao dịch đang được xử lý. Vui lòng chờ trong giây lát! <br>
-                      Liên hệ <a href="https://t.me/ChoOTCVN_support" target="_blank">@ChoOTCVN_support</a>
+                      Liên hệ <a href="https://t.me/QuocPham_OTC" target="_blank">@QuocPham_OTC</a>
                       để được hỗ trợ.
                     </div>
                   </div>
@@ -287,7 +287,7 @@
                   </v-icon>
                 </template>
                 <div class="tooltip my-1">
-                  Hạn mức bán mặc định là 500 nghìn - 50 triệu.
+                  Hạn mức bán tối thiểu là 500 nghìn
                 </div>
               </v-tooltip>
             </div>
@@ -459,7 +459,7 @@ export default {
     return {
       tab: 1,
       step: 1,
-      amount: 100,
+      amount: 1000,
       token_list: ["usdt", "btc", "eth", "busd", "bnb"],
       token: "usdt",
       money: "",
@@ -493,8 +493,8 @@ export default {
         },
       ],
       network: {
-        name: "BNB Smartchain (BEP20)",
-        value: "bep20",
+        name: "Tron (TRC20)",
+        value: "trc20",
         fee: 2
       },
       wallet_address: "",
@@ -533,15 +533,15 @@ export default {
   },
   methods: {
     orderHandle() {
-      if (this.money < 500000) {
-        this.error = 'Hạn mức giao dịch tối thiểu là 500 nghìn'
-        return
-      }
+      // if (this.money < 500000) {
+      //   this.error = 'Hạn mức giao dịch tối thiểu là 500 nghìn'
+      //   return
+      // }
 
-      if (this.money > 50000000) {
-        this.error = 'Hạn mức giao dịch tối đa là 50 triệu. Bán số lượng lớn tại'
-        return
-      }
+      // if (this.money > 50000000) {
+      //   this.error = 'Hạn mức giao dịch tối đa là 50 triệu. Bán số lượng lớn tại'
+      //   return
+      // }
 
       if (!this.amount) {
         this.error = "Vui lòng nhập số lượng cần bán"
@@ -606,13 +606,18 @@ export default {
     },
     getPrice() {
       this.price = 0;
-      this.token = this.$route.params.id
+      if (this.$route.params.id)
+        this.token = this.$route.params.id
       this.loading = true
-      const params = `p2p?type=sell&asset=${this.$route.params.id}&fiat=vnd`;
+      const params = `p2p?type=sell&asset=${this.token}&fiat=vnd`;
       this.CallAPI("get", params, {}, (res) => {
-        this.price = Number(res.data.data[7].adv.price);
+        this.price = Number(res.data.data[19].adv.price);
         if (this.token == "usdt") {
-          this.usdt_price = Number(res.data.data[7].adv.price);
+          this.usdt_price = Number(res.data.data[19].adv.price);
+        }
+        if(this.amount < 5000){
+          this.price -= 100
+          this.usdt_price -= 100
         }
         this.loading = false
         this.inputAmount();
@@ -700,6 +705,9 @@ export default {
         this.amount = 0.1
       }
       this.money = 0
+    },
+    amount(){
+      this.getPrice()
     }
   },
   beforeDestroy() {

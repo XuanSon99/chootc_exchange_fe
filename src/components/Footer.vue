@@ -4,7 +4,7 @@
       <v-divider class="mb-3"></v-divider>
       <v-row align="center">
         <v-col cols="12" md="4">
-          © 2023 chootc.com. All rights reserved
+          © 2024 chootc.com. All rights reserved
         </v-col>
         <v-col cols="12" md="4">
           <div class="d-flex justify-center">

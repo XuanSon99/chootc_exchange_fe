@@ -9,7 +9,7 @@ const routes = [
   {
     name: "Giao dịch",
     path: "*",
-    component: () => import("../views/Buy.vue"),
+    component: () => import("../views/Sell.vue"),
     meta: {
       header: true,
       hide: true
@@ -140,10 +140,11 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name == 'History' && !localStorage.getItem("access_token")) next({ name: 'Login' })
+  if (to.name == 'Lịch sử giao dịch' && !localStorage.getItem("access_token")) next({ name: 'Login' })
   if (to.name == 'Error' && !localStorage.getItem("access_token")) next({ name: 'Login' })
-  if (to.name == 'Profile' && !localStorage.getItem("access_token")) next({ name: 'Login' })
-  if (to.name == 'Referral' && !localStorage.getItem("access_token")) next({ name: 'Login' })
+  if (to.name == 'Thông tin cá nhân' && !localStorage.getItem("access_token")) next({ name: 'Login' })
+  if (to.name == 'Thông báo' && !localStorage.getItem("access_token")) next({ name: 'Login' })
+  if (to.name == 'Chương trình giới thiệu' && !localStorage.getItem("access_token")) next({ name: 'Login' })
   if (to.name == 'Account' && !localStorage.getItem("access_token")) next({ name: 'Login' })
   next()
 })

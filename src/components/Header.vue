@@ -11,9 +11,9 @@
           <v-spacer></v-spacer>
 
           <div class="d-flex align-center">
-            <v-btn @click="$router.push('/buy/usdt')" text color="black">
+            <!-- <v-btn @click="$router.push('/buy/usdt')" text color="black">
               Giao dịch mua
-            </v-btn>
+            </v-btn> -->
 
             <v-btn @click="$router.push('/sell/usdt')" text color="black">
               Giao dịch bán
@@ -341,11 +341,11 @@ export default {
         "***" +
         this.random(100, 999);
 
-      let money = this.formatMoney(this.random(1, 20) * 100)
+      let money = this.formatMoney(this.random(1, 20) * 1000)
 
-      let text = `Người dùng ${phone} vừa mua thành công ${money} USDT`
+      let text = `Người dùng ${phone} vừa bán thành công ${money} USDT`
       if (type == 1) {
-        text = `Người dùng ${phone} vừa mua thành công ${money} BUSD`
+        text = `Người dùng ${phone} vừa bán thành công ${money} BUSD`
       }
       if (type == 2) {
         text = `Người dùng ${phone} vừa bán thành công ${money} USDT`

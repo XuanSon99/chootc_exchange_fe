@@ -141,7 +141,7 @@ export default {
     data() {
         return {
             dialog: false,
-            tab: 0,
+            tab: 1,
             interval: '',
             asset_list: [],
             current_password: "",

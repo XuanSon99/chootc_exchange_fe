@@ -200,7 +200,7 @@
                   <v-icon size="20" class="mt-1 mr-2" color="primary">mdi-progress-check</v-icon>
                   <div>
                     Giao dịch đang được xử lý. Vui lòng chờ trong giây lát! <br>
-                    Liên hệ <a href="https://t.me/ChoOTCVN_support" target="_blank">@ChoOTCVN_support</a>
+                    Liên hệ <a href="https://t.me/QuocPham_OTC" target="_blank">@QuocPham_OTC</a>
                     để được hỗ trợ.
                   </div>
                 </div>
@@ -512,61 +512,65 @@ export default {
       this.step = 1
     },
     orderHandle() {
-      if (this.money > 2500000) {
-        if (!this.account) {
-          this.error = 'Hạn mức tối đa là 2.5 triệu. Đăng nhập để tăng hạn mức'
-          return
-        }
-        if (this.account.verify != 'success') {
-          this.error = 'Hạn mức tối đa là 2.5 triệu. KYC ngay để tăng hạn mức'
-          return
-        }
-      }
+    
+      this.error = 'Chức năng mua đang tạm ngưng. Bạn có thể bán USDT!'
+      return
 
-      if (this.money < 1000000) {
-        this.error = 'Hạn mức giao dịch tối thiểu là 1 triệu'
-        return
-      }
+      // if (this.money > 2500000) {
+      //   if (!this.account) {
+      //     this.error = 'Hạn mức tối đa là 2.5 triệu. Đăng nhập để tăng hạn mức'
+      //     return
+      //   }
+      //   if (this.account.verify != 'success') {
+      //     this.error = 'Hạn mức tối đa là 2.5 triệu. KYC ngay để tăng hạn mức'
+      //     return
+      //   }
+      // }
 
-      if (this.money > 50000000) {
-        this.error = 'Hạn mức giao dịch tối đa là 50 triệu. Mua số lượng lớn tại'
-        return
-      }
+      // if (this.money < 1000000) {
+      //   this.error = 'Hạn mức giao dịch tối thiểu là 1 triệu'
+      //   return
+      // }
 
-      if (!this.amount) {
-        this.error = "Vui lòng nhập số lượng cần mua"
-        return
-      }
+      // if (this.money > 50000000) {
+      //   this.error = 'Hạn mức giao dịch tối đa là 50 triệu. Mua số lượng lớn tại'
+      //   return
+      // }
 
-      if (!this.address) {
-        this.error = "Vui lòng nhập địa chỉ ví của bạn"
-        return
-      }
+      // if (!this.amount) {
+      //   this.error = "Vui lòng nhập số lượng cần mua"
+      //   return
+      // }
 
-      if (this.network.value == 'trc20' && !this.validateTrc(this.address)) {
-        this.error = "Địa chỉ ví không chính xác"
-        return
-      }
-      if (this.network.value != 'trc20' && !this.validateErc(this.address)) {
-        this.error = "Địa chỉ ví không chính xác"
-        return
-      }
-      this.loading = true
+      // if (!this.address) {
+      //   this.error = "Vui lòng nhập địa chỉ ví của bạn"
+      //   return
+      // }
 
-      let data = {
-        phone: this.account.phone,
-        amount: this.amount,
-        network: this.network.value,
-        address: this.address,
-        token: this.token,
-        fee: this.transfer_fee,
-      }
-      this.CallAPI("post", "buy-order", data, (res) => {
-        this.order_data = res.data.data
-        this.price = this.order_data.rate
-        this.step = 2
-        this.loading = false
-      })
+      // if (this.network.value == 'trc20' && !this.validateTrc(this.address)) {
+      //   this.error = "Địa chỉ ví không chính xác"
+      //   return
+      // }
+      // if (this.network.value != 'trc20' && !this.validateErc(this.address)) {
+      //   this.error = "Địa chỉ ví không chính xác"
+      //   return
+      // }
+      // this.loading = true
+
+      // let data = {
+      //   phone: this.account.phone,
+      //   amount: this.amount,
+      //   network: this.network.value,
+      //   address: this.address,
+      //   token: this.token,
+      //   fee: this.transfer_fee,
+      // }
+      // this.CallAPI("post", "buy-order", data, (res) => {
+      //   this.order_data = res.data.data
+      //   this.price = this.order_data.rate
+      //   this.step = 2
+      //   this.loading = false
+      // })
     },
     getPrice() {
       this.price = 0;
