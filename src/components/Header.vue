@@ -11,9 +11,9 @@
           <v-spacer></v-spacer>
 
           <div class="d-flex align-center">
-            <!-- <v-btn @click="$router.push('/buy/usdt')" text color="black">
+            <v-btn @click="$router.push('/buy/usdt')" text color="black">
               Giao dịch mua
-            </v-btn> -->
+            </v-btn>
 
             <v-btn @click="$router.push('/sell/usdt')" text color="black">
               Giao dịch bán

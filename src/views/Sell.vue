@@ -119,8 +119,8 @@
                   <span class="error-msg">
                     {{ error }}
                   </span>
-                  <a class="ml-1 mt-2 fz-14" href="https://t.me/chootcvn" target="_blank"
-                    v-if="error.includes('số lượng lớn')">@chootcvn</a>
+                  <a class="ml-1 mt-2 fz-14" href="https://t.me/QuocPham_OTC" target="_blank"
+                    v-if="error.includes('số lượng lớn')">@QuocPham_OTC</a>
                 </div>
               </div>
               <v-btn color="primary" @click="orderHandle" :disabled="loading" width="120px">
@@ -368,8 +368,8 @@
           <span class="error-msg">
             {{ error }}
           </span>
-          <a class="ml-1 mt-2 fz-14" href="https://t.me/chootcvn" target="_blank"
-            v-if="error.includes('số lượng lớn')">@chootcvn</a>
+          <a class="ml-1 mt-2 fz-14" href="https://t.me/QuocPham_OTC" target="_blank"
+            v-if="error.includes('số lượng lớn')">@QuocPham_OTC</a>
         </div>
         <v-btn color="primary" @click="orderHandle" :disabled="loading" class="mt-6 elevation-0" rounded block x-large>
           <v-progress-circular indeterminate v-if="loading" :width="3" :size="20"></v-progress-circular>

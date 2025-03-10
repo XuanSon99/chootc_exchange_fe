@@ -20,7 +20,7 @@ export default {
     computed: {
         ...mapGetters(["account"]),
         kyc_link() {
-            return `https://exchange.chootc.com/kyc/${this.account.phone}`
+            return `https://muabanusdt.xyz/kyc/${this.account.phone}`
         }
     },
     methods: {

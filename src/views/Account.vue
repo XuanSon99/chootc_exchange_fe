@@ -67,7 +67,7 @@ export default {
                 { title: 'Thông tin cá nhân', icon: 'mdi-account-circle-outline', route: "/profile" },
                 { title: 'Chương trình giới thiệu', icon: 'mdi-account-multiple-outline', route: "/referral" },
                 { title: 'Hướng dẫn giao dịch', icon: 'mdi-bookmark-multiple-outline', href: "https://chootc.gitbook.io/exchange/huong-dan/mua-tien-dien-tu" },
-                { title: 'Hỗ trợ trực tuyến', icon: 'mdi-headphones', href: "https://t.me/ChoOTCVN_support" },
+                { title: 'Hỗ trợ trực tuyến', icon: 'mdi-headphones', href: "https://t.me/QuocPham_OTC" },
             ]
         }
     },

@@ -157,7 +157,7 @@ export default {
             return this.filter.dates.join(' ~ ')
         },
         ref_link() {
-            return `https://exchange.chootc.com/register?ref=${this.account.phone}`
+            return `https://muabanusdt.xyz/register?ref=${this.account.phone}`
         },
         mobile() {
             return this.$vuetify.breakpoint.width < 1025
@@ -333,11 +333,11 @@ export default {
             const blob = await fetch(this.qr_url).then(r => r.blob())
             const data = {
                 files: [
-                    new File([blob], 'exchange-chootc.png', {
+                    new File([blob], 'muabanusdt.png', {
                         type: blob.type,
                     }),
                 ],
-                title: "Đăng ký tài khoản trang mua bán lẻ Exchange.chootc.com",
+                title: "Đăng ký tài khoản trang mua bán lẻ muabanusdt.xyz",
                 text: this.ref_link,
             };
             try {

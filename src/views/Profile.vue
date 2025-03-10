@@ -78,7 +78,7 @@
                 <v-icon color="orange">mdi-alert-outline</v-icon>
                 <div class="warning-msg ml-3">
                   Yêu cầu KYC của bạn đang trong quá trình xét duyệt. Bạn có thể liên hệ <a
-                    href="https://t.me/ChoOTCVN_support" target="_blank">@ChoOTCVN_support</a> để được hỗ trợ.
+                    href="https://t.me/QuocPham_OTC" target="_blank">@QuocPham_OTC</a> để được hỗ trợ.
                 </div>
               </div>
             </v-card>
@@ -124,7 +124,7 @@ export default {
         },
         {
           answer: 'Tôi có thể liên hệ ai để được hỗ trợ?',
-          question: 'Bạn có thể liên hệ qua telegram @ChoOTCVN_support để được hỗ trợ.'
+          question: 'Bạn có thể liên hệ qua telegram @QuocPham_OTC để được hỗ trợ.'
         },
       ]
     }
@@ -136,10 +136,10 @@ export default {
       return now.toLocaleDateString()
     },
     kyc_link() {
-      return `https://exchange.chootc.com/kyc/${this.account.phone}`
+      return `https://muabanusdt.xyz/kyc/${this.account.phone}`
     },
     ref_link() {
-      return `https://exchange.chootc.com/register?ref=${this.account.phone}`
+      return `https://muabanusdt.xyz/register?ref=${this.account.phone}`
     },
     mobile() {
       return this.$vuetify.breakpoint.width < 1025

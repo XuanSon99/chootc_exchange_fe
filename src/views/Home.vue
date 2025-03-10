@@ -43,7 +43,7 @@
                     <p>Bán</p>
                 </div>
                 <div>
-                    <v-btn class="mx-5 elevation-0" fab href="https://chootc.com" target="_blank">
+                    <v-btn class="mx-5 elevation-0" fab href="https://www.bitget.com" target="_blank">
                         <v-icon>
                             mdi-currency-usd
                         </v-icon>

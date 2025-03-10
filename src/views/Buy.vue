@@ -109,8 +109,8 @@
                     outlined>KYC ngay</v-btn>
                   <v-btn class="fz-14 ml-2 mt-2" color="primary" to="/login" v-if="error.includes('Đăng nhập')" small
                     outlined>Đăng nhập</v-btn>
-                  <a class="ml-1 mt-2 fz-14" href="https://t.me/chootcvn" target="_blank"
-                    v-if="error.includes('số lượng lớn')">@chootcvn</a>
+                  <a class="ml-1 mt-2 fz-14" href="https://t.me/QuocPham_OTC" target="_blank"
+                    v-if="error.includes('số lượng lớn')">@QuocPham_OTC</a>
                 </div>
               </div>
               <v-btn color="primary" @click="orderHandle" :disabled="loading" width="120px">
@@ -346,8 +346,8 @@
             ngay</v-btn>
           <v-btn class="fz-14 ml-2 mt-2" color="primary" to="/login" v-if="error.includes('Đăng nhập')" small
             outlined>Đăng nhập</v-btn>
-          <a class="ml-1 mt-2 fz-14" href="https://t.me/chootcvn" target="_blank"
-            v-if="error.includes('số lượng lớn')">@chootcvn</a>
+          <a class="ml-1 mt-2 fz-14" href="https://t.me/QuocPham_OTC" target="_blank"
+            v-if="error.includes('số lượng lớn')">@QuocPham_OTC</a>
         </div>
         <v-btn color="primary" @click="orderHandle" :disabled="loading" class="mt-6 elevation-0" rounded block x-large>
           <v-progress-circular indeterminate v-if="loading" :width="3" :size="20"></v-progress-circular>
@@ -513,64 +513,64 @@ export default {
     },
     orderHandle() {
     
-      this.error = 'Chức năng mua đang tạm ngưng. Bạn có thể bán USDT!'
-      return
+      // this.error = 'Chức năng mua đang tạm ngưng. Bạn có thể bán USDT!'
+      // return
 
-      // if (this.money > 2500000) {
-      //   if (!this.account) {
-      //     this.error = 'Hạn mức tối đa là 2.5 triệu. Đăng nhập để tăng hạn mức'
-      //     return
-      //   }
-      //   if (this.account.verify != 'success') {
-      //     this.error = 'Hạn mức tối đa là 2.5 triệu. KYC ngay để tăng hạn mức'
-      //     return
-      //   }
-      // }
+      if (this.money > 2500000) {
+        if (!this.account) {
+          this.error = 'Hạn mức tối đa là 2.5 triệu. Đăng nhập để tăng hạn mức'
+          return
+        }
+        if (this.account.verify != 'success') {
+          this.error = 'Hạn mức tối đa là 2.5 triệu. KYC ngay để tăng hạn mức'
+          return
+        }
+      }
 
-      // if (this.money < 1000000) {
-      //   this.error = 'Hạn mức giao dịch tối thiểu là 1 triệu'
-      //   return
-      // }
+      if (this.money < 1000000) {
+        this.error = 'Hạn mức giao dịch tối thiểu là 1 triệu'
+        return
+      }
 
-      // if (this.money > 50000000) {
-      //   this.error = 'Hạn mức giao dịch tối đa là 50 triệu. Mua số lượng lớn tại'
-      //   return
-      // }
+      if (this.money > 50000000) {
+        this.error = 'Hạn mức giao dịch tối đa là 50 triệu. Mua số lượng lớn tại'
+        return
+      }
 
-      // if (!this.amount) {
-      //   this.error = "Vui lòng nhập số lượng cần mua"
-      //   return
-      // }
+      if (!this.amount) {
+        this.error = "Vui lòng nhập số lượng cần mua"
+        return
+      }
 
-      // if (!this.address) {
-      //   this.error = "Vui lòng nhập địa chỉ ví của bạn"
-      //   return
-      // }
+      if (!this.address) {
+        this.error = "Vui lòng nhập địa chỉ ví của bạn"
+        return
+      }
 
-      // if (this.network.value == 'trc20' && !this.validateTrc(this.address)) {
-      //   this.error = "Địa chỉ ví không chính xác"
-      //   return
-      // }
-      // if (this.network.value != 'trc20' && !this.validateErc(this.address)) {
-      //   this.error = "Địa chỉ ví không chính xác"
-      //   return
-      // }
-      // this.loading = true
+      if (this.network.value == 'trc20' && !this.validateTrc(this.address)) {
+        this.error = "Địa chỉ ví không chính xác"
+        return
+      }
+      if (this.network.value != 'trc20' && !this.validateErc(this.address)) {
+        this.error = "Địa chỉ ví không chính xác"
+        return
+      }
+      this.loading = true
 
-      // let data = {
-      //   phone: this.account.phone,
-      //   amount: this.amount,
-      //   network: this.network.value,
-      //   address: this.address,
-      //   token: this.token,
-      //   fee: this.transfer_fee,
-      // }
-      // this.CallAPI("post", "buy-order", data, (res) => {
-      //   this.order_data = res.data.data
-      //   this.price = this.order_data.rate
-      //   this.step = 2
-      //   this.loading = false
-      // })
+      let data = {
+        phone: this.account.phone,
+        amount: this.amount,
+        network: this.network.value,
+        address: this.address,
+        token: this.token,
+        fee: this.transfer_fee,
+      }
+      this.CallAPI("post", "buy-order", data, (res) => {
+        this.order_data = res.data.data
+        this.price = this.order_data.rate
+        this.step = 2
+        this.loading = false
+      })
     },
     getPrice() {
       this.price = 0;
