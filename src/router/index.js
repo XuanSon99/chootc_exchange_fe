@@ -9,7 +9,7 @@ const routes = [
   {
     name: "Giao dịch",
     path: "*",
-    component: () => import("../views/Sell.vue"),
+    component: () => import("../views/Buy.vue"),
     meta: {
       header: true,
       hide: true

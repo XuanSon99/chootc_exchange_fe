@@ -37,8 +37,7 @@
                           </v-icon>
                         </template>
                         <div class="tooltip my-1">
-                          Hạn mức mua mặc định là 500 nghìn - 2.5 triệu. <br> Đăng nhập và KYC để tăng hạn mức lên 50
-                          triệu!
+                          Đối với giao dịch mua bạn phải đăng nhập và KYC để giao dịch
                         </div>
                       </v-tooltip>
                     </div>
@@ -107,7 +106,7 @@
                   </span>
                   <v-btn class="fz-14 ml-2 mt-2" color="primary" :to="'/profile'" v-if="error.includes('KYC')" small
                     outlined>KYC ngay</v-btn>
-                  <v-btn class="fz-14 ml-2 mt-2" color="primary" to="/login" v-if="error.includes('Đăng nhập')" small
+                  <v-btn class="fz-14 ml-2 mt-2" color="primary" to="/login" v-if="error.includes('đăng nhập')" small
                     outlined>Đăng nhập</v-btn>
                   <a class="ml-1 mt-2 fz-14" href="https://t.me/QuocPham_OTC" target="_blank"
                     v-if="error.includes('số lượng lớn')">@QuocPham_OTC</a>
@@ -344,7 +343,7 @@
           </span>
           <v-btn class="fz-14 ml-2 mt-2" color="primary" :to="'/profile'" v-if="error.includes('KYC')" small outlined>KYC
             ngay</v-btn>
-          <v-btn class="fz-14 ml-2 mt-2" color="primary" to="/login" v-if="error.includes('Đăng nhập')" small
+          <v-btn class="fz-14 ml-2 mt-2" color="primary" to="/login" v-if="error.includes('đăng nhập')" small
             outlined>Đăng nhập</v-btn>
           <a class="ml-1 mt-2 fz-14" href="https://t.me/QuocPham_OTC" target="_blank"
             v-if="error.includes('số lượng lớn')">@QuocPham_OTC</a>
@@ -516,25 +515,35 @@ export default {
       // this.error = 'Chức năng mua đang tạm ngưng. Bạn có thể bán USDT!'
       // return
 
-      if (this.money > 2500000) {
-        if (!this.account) {
-          this.error = 'Hạn mức tối đa là 2.5 triệu. Đăng nhập để tăng hạn mức'
+      // if (this.money > 2500000) {
+      //   if (!this.account) {
+      //     this.error = 'Hạn mức tối đa là 2.5 triệu. Đăng nhập để tăng hạn mức'
+      //     return
+      //   }
+      //   if (this.account.verify != 'success') {
+      //     this.error = 'Hạn mức tối đa là 2.5 triệu. KYC ngay để tăng hạn mức'
+      //     return
+      //   }
+      // }
+
+      // if (this.money < 1000000) {
+      //   this.error = 'Hạn mức giao dịch tối thiểu là 1 triệu'
+      //   return
+      // }
+
+      // if (this.money > 50000000) {
+      //   this.error = 'Hạn mức giao dịch tối đa là 50 triệu. Mua số lượng lớn tại'
+      //   return
+      // }
+
+      if (!this.account) {
+          this.error = 'Vui lòng đăng nhập để giao dịch'
           return
-        }
-        if (this.account.verify != 'success') {
-          this.error = 'Hạn mức tối đa là 2.5 triệu. KYC ngay để tăng hạn mức'
-          return
-        }
       }
 
-      if (this.money < 1000000) {
-        this.error = 'Hạn mức giao dịch tối thiểu là 1 triệu'
-        return
-      }
-
-      if (this.money > 50000000) {
-        this.error = 'Hạn mức giao dịch tối đa là 50 triệu. Mua số lượng lớn tại'
-        return
+      if (this.account.verify != 'success') {
+          this.error = 'Vui lòng KYC để giao dịch'
+          return
       }
 
       if (!this.amount) {

@@ -4,7 +4,7 @@
       <v-app-bar color="#ffffff" height="68px" fixed>
         <v-container class="d-flex align-center">
           <router-link to="/">
-            <v-img class="logo" src="/img/logo-header.png">
+            <v-img class="logo" style="width: 130px; image-rendering: pixelated;" src="/img/logo-header.jpg">
             </v-img>
           </router-link>
 
