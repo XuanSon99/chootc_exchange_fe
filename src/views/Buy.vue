@@ -451,7 +451,12 @@ export default {
         {
           name: "Ethereum (ERC20)",
           value: "erc20",
-          fee: 10
+          fee: 20
+        },
+        {
+          name: "Bitcoin (Bitcoin)",
+          value: "bitcoin",
+          fee: 30
         },
       ],
       network: {
